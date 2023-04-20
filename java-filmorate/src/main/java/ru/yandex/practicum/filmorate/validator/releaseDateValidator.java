@@ -1,28 +1,22 @@
-package ru.yandex.practicum.filmorate.model;
+package ru.yandex.practicum.filmorate.validator;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import ru.yandex.practicum.filmorate.validator.ReleaseDate;
 
-import java.text.ParseException;
 import java.time.LocalDate;
 
-public class releaseDateValidator implements ConstraintValidator<ReleaseDate, String> {
+public class releaseDateValidator implements ConstraintValidator<ReleaseDate, LocalDate> {
     @Override
-    public void initialize(ReleaseDate constraintAnnotation) {
-        ConstraintValidator.super.initialize(constraintAnnotation);
-    }
-
-    @Override
-    public boolean isValid(String value, ConstraintValidatorContext constraintValidatorContext) {
-        if (value.isBlank()) {
-            return false;
-        }
+    public boolean isValid(LocalDate value, ConstraintValidatorContext constraintValidatorContext) {
         try {
-            LocalDate releaseDate = LocalDate.parse(value);
-            if (releaseDate.isBefore(LocalDate.of(1895,1, 28))) {
+            if (value == null) {
+                return false;
+            }
+            if (value.isBefore(LocalDate.of(1895,1, 28))) {
                 return false;
             } else return true;
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             return false;
         }
     }
