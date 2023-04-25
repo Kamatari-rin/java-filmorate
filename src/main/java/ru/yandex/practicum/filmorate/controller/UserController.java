@@ -21,8 +21,6 @@ public class UserController {
 
     private final Map<Long, User> userMap = new HashMap<>();
 
-    CustomRestExceptionHandler customRestExceptionHandler  = new CustomRestExceptionHandler();
-
     private Long id = 0L;
 
     @GetMapping("/users")
@@ -32,12 +30,13 @@ public class UserController {
     }
 
     @PostMapping(value = "/users")
-    public ResponseEntity<?> create(@Valid @RequestBody User user) {
+    public ResponseEntity<User> create(@Valid @RequestBody User user) {
         if (user.getName().isBlank() | user.getName() == null) {
             user.setName(user.getLogin());
         }
         user.setId(++id);
         userMap.put(user.getId(), user);
+        log.debug("The user " +user.getName() +" has been successfully created.");
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 
@@ -46,8 +45,12 @@ public class UserController {
         try {
             if (userMap.get(user.getId()) != null) {
                 userMap.put(user.getId(), user);
+                log.debug("The user has been successfully updated.");
                 return new ResponseEntity<User>(user, HttpStatus.OK);
-            } else throw new ValidationException("The User with this id does not exist.");
+            } else {
+                log.warn("Request for a user with a non-existent id:" + user.getId());
+                throw new ValidationException("The User with " + user.getId() + " id does not exist.");
+            }
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }

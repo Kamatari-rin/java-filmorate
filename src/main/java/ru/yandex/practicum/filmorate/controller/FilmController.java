@@ -20,10 +20,8 @@ import java.util.Map;
 @RestController
 public class FilmController {
 
-    Map<Long, Film> filmMap = new HashMap<>();
+    private final Map<Long, Film> filmMap = new HashMap<>();
     private Long id = 0L;
-
-    CustomRestExceptionHandler customRestExceptionHandler  = new CustomRestExceptionHandler();
 
     @GetMapping("/films")
     public List<Film> getFilmsList() {
@@ -34,6 +32,7 @@ public class FilmController {
     public ResponseEntity<Film> create(@Valid @RequestBody Film film) {
         film.setId(++id);
         filmMap.put(film.getId(), film);
+        log.debug("The film " + film.getName() + " has been successfully created.");
         return new ResponseEntity<Film>(film, HttpStatus.OK);
     }
 
@@ -42,8 +41,12 @@ public class FilmController {
         try {
             if (filmMap.get(film.getId()) != null) {
                 filmMap.put(film.getId(), film);
+                log.debug("The film " + film.getName() + " has been successfully updated.");
                 return new ResponseEntity<Film>(film, HttpStatus.OK);
-            } else throw new ValidationException("The film with this id does not exist.");
+            } else {
+                log.warn("TRequest for movie with non-existent id:" + film.getId());
+                throw new ValidationException("The film with " + film.getId() + " id does not exist.");
+            }
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
