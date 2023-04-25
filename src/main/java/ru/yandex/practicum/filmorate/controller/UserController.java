@@ -35,7 +35,7 @@ public class UserController {
         }
         user.setId(++id);
         userMap.put(user.getId(), user);
-        log.debug("The user " +user.getName() + " has been successfully created.");
+        log.debug("The user " + user.getName() + " has been successfully created.");
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 
