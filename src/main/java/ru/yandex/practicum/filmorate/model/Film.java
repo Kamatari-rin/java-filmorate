@@ -13,7 +13,6 @@ import java.util.Set;
 @Data
 public class Film {
     private Long id;
-
     @NotBlank(message = "Name cannot be empty.")
     private String name;
     @Size(max = 200, message = "The description length is 200 characters.")
@@ -22,7 +21,7 @@ public class Film {
     private LocalDate releaseDate;
     @FilmDuration(message = "Film duration should be positive.")
     private int duration;
-    private Set<Long> likes = new HashSet<>();
+    private final Set<Long> likes = new HashSet<>();
 
     public Film(String name, String description, LocalDate releaseDate, int duration) {
         this.name = name;

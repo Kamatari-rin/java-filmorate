@@ -13,9 +13,7 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @ControllerAdvice
 @Slf4j
@@ -40,13 +38,12 @@ public class FilmController {
 ///////////////////////////////////////////    POST MAPPING    /////////////////////////////////////////////////////////
 
     @PostMapping("/films")
-    public ResponseEntity<?> create(@Valid @RequestBody Film film) {
+    public ResponseEntity<Film> create(@Valid @RequestBody Film film) {
         try {
-            filmService.createNewFilm(film);
-            log.debug("The film " + film.getName() + " has been successfully created.");
-            return new ResponseEntity<Film>(film, HttpStatus.OK);
+            return new ResponseEntity<Film>(filmService.addFilm(film), HttpStatus.OK);
         } catch (Exception e) {
-            throw new ValidationException(e.getMessage());
+            log.warn("Error when trying to add a new movie: \n" + e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
     }
 
@@ -56,24 +53,34 @@ public class FilmController {
     @PutMapping("/films")
     public ResponseEntity<Film> update(@RequestBody @Valid @NotNull Film film) {
         try {
-            filmService.updateFilm(film);
-            log.debug("The film " + film.getName() + " has been successfully updated.");
-            return new ResponseEntity<Film>(film, HttpStatus.OK);
+            return new ResponseEntity<Film>(filmService.updateFilm(film), HttpStatus.OK);
         } catch (Exception e){
             log.warn("Request for movie with non-existent id:" + film.getId() + ".");
-            throw new ValidationException(e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
     }
 
     @PutMapping("/films/{id}/like/{userId}")
-    public ResponseEntity<Film> likeTheFilm(@PathVariable Long filmId, Long userid) {
+    public ResponseEntity<Film> likeTheFilm(@PathVariable Long id, Long userId) {
         try {
-            filmService.addLike(filmId, userid);
-            return new ResponseEntity<Film>(filmService.getFilmById(filmId), HttpStatus.OK);
-        } catch (NullPointerException e) {
-            log.warn("Request for movie or user with non-existent id: " +
-                    "[Film id:" + filmId + "], [User id: " + userid + "]" + ".");
-            throw new ValidationException(e.getMessage());
+            return new ResponseEntity<Film>(filmService.addLike(id, userId), HttpStatus.OK);
+        } catch (Exception e) {
+            log.warn("The user or movie with this id does not exist: " +
+                    "[Film id:" + id + "], [User id: " + userId + "]" + ".");
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+/////////////////////////////////////////    DELETE MAPPING    /////////////////////////////////////////////////////////
+
+    @DeleteMapping("/films/{id}/like/{userId}")
+    public ResponseEntity<Film> deleteUserLike(@PathVariable Long id, Long userId) {
+        try {
+            return new ResponseEntity<Film>(filmService.removeLike(id, userId), HttpStatus.OK);
+        } catch (Exception e) {
+            log.warn("The user or movie with this id does not exist: " +
+                    "[Film id:" + id + "], [User id: " + userId + "]" + ".");
+            throw new RuntimeException(e.getMessage());
         }
     }
 }

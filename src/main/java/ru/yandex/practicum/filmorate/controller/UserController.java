@@ -22,8 +22,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final Map<Long, User> userMap = new HashMap<>();
-    private Long id = 0L;
     private UserService userService;
 
     @GetMapping("/users")

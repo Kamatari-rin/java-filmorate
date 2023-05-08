@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
+import javax.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,13 +17,26 @@ public class FilmService {
     private UserService userService;
 
     public Film addLike(Long filmId, Long userId) {
-        filmStorage.getFilmById(filmId)
-                   .getLikes()
-                   .add(userId);
-        return filmStorage.getFilmById(filmId);
+        if (filmStorage.getFilmsMap().containsKey(filmId) && userService.getUsers().containsKey(userId)) {
+            filmStorage.getFilmById(filmId)
+                    .getLikes()
+                    .add(userId);
+            return filmStorage.getFilmById(filmId);
+        } else throw new ValidationException("The user or movie with this id does not exist: " +
+                "[Film id:" + filmId + "], [User id: " + userId + "]" + ".");
     }
 
-    public Film createNewFilm(Film film) {
+    public Film removeLike(Long filmId, Long userId) {
+        if (filmStorage.getFilmsMap().containsKey(filmId) && userService.getUsers().containsKey(userId)) {
+            filmStorage.getFilmById(filmId)
+                    .getLikes()
+                    .remove(userId);
+            return filmStorage.getFilmById(filmId);
+        } else throw new ValidationException("The user or movie with this id does not exist: " +
+                "[Film id:" + filmId + "], [User id: " + userId + "]" + ".");
+    }
+
+    public Film addFilm(Film film) {
         return filmStorage.add(film);
     }
 
