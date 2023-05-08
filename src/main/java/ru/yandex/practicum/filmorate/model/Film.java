@@ -7,6 +7,8 @@ import ru.yandex.practicum.filmorate.validator.FilmDuration;
 import ru.yandex.practicum.filmorate.validator.ReleaseDate;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 public class Film {
@@ -20,6 +22,7 @@ public class Film {
     private LocalDate releaseDate;
     @FilmDuration(message = "Film duration should be positive.")
     private int duration;
+    private Set<Long> likes = new HashSet<>();
 
     public Film(String name, String description, LocalDate releaseDate, int duration) {
         this.name = name;

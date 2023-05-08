@@ -7,6 +7,8 @@ import lombok.Data;
 import ru.yandex.practicum.filmorate.validator.UserBirthday;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 public class User {
@@ -20,6 +22,8 @@ public class User {
     private String name;
     @UserBirthday(message = "The user's date of birth must not be in the future.")
     private LocalDate birthday;
+
+    private Set<Long> friends = new HashSet<>();
 
     public User(String email, String login, String name, LocalDate birthday) {
         this.email = email;
