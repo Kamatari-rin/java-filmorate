@@ -1,8 +1,11 @@
 package ru.yandex.practicum.filmorate.storage;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.model.User;
 
+import javax.validation.ValidationException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,22 +22,15 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public User getUserById(Long id) {
-        return null;
-    }
-
-    @Override
-    public boolean isUserExist(Long id) {
-        return false;
-    }
-
-    @Override
     public User create(User user) {
-        return null;
+        user.setId(++id);
+        userMap.put(user.getId(), user);
+        return userMap.get(user.getId());
     }
 
     @Override
     public User update(User user) {
-        return null;
+        userMap.put(user.getId(), user);
+        return userMap.get(user.getId());
     }
 }

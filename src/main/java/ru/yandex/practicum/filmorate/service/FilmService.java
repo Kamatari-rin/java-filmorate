@@ -1,6 +1,6 @@
 package ru.yandex.practicum.filmorate.service;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
@@ -10,30 +10,37 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class FilmService {
 
+    @Autowired
     private FilmStorage filmStorage;
+    @Autowired
     private UserService userService;
 
-    public Film addLike(Long filmId, Long userId) {
-        if (filmStorage.getFilmsMap().containsKey(filmId) && userService.getUsers().containsKey(userId)) {
-            filmStorage.getFilmById(filmId)
-                    .getLikes()
-                    .add(userId);
-            return filmStorage.getFilmById(filmId);
-        } else throw new ValidationException("The user or movie with this id does not exist: " +
-                "[Film id:" + filmId + "], [User id: " + userId + "]" + ".");
+    public Film addLike(Long filmId, Long userId ) {
+        userService.isUserExist(userId);
+        isFilmExist(filmId);
+
+        getFilmById(filmId)
+                .getLikes()
+                .add(userId);
+
+        return filmStorage
+                .getFilmsMap()
+                .get(filmId);
     }
 
     public Film removeLike(Long filmId, Long userId) {
-        if (filmStorage.getFilmsMap().containsKey(filmId) && userService.getUsers().containsKey(userId)) {
-            filmStorage.getFilmById(filmId)
-                    .getLikes()
-                    .remove(userId);
-            return filmStorage.getFilmById(filmId);
-        } else throw new ValidationException("The user or movie with this id does not exist: " +
-                "[Film id:" + filmId + "], [User id: " + userId + "]" + ".");
+        userService.isUserExist(userId);
+        isFilmExist(filmId);
+
+        getFilmById(filmId)
+                .getLikes()
+                .remove(userId);
+
+        return filmStorage
+                .getFilmsMap()
+                .get(filmId);
     }
 
     public Film addFilm(Film film) {
@@ -41,20 +48,27 @@ public class FilmService {
     }
 
     public Film updateFilm(Film film) {
+        isFilmExist(film.getId());
         return filmStorage.update(film);
     }
 
     public List<Film> getAllFilms() {
-        return new ArrayList<Film>(filmStorage.getFilmsMap().values());
+        if (filmStorage.getFilmsMap() != null) {
+            return new ArrayList<Film>(filmStorage.getFilmsMap().values());
+        } else throw new NullPointerException("Not a single movie was found.");
     }
 
     public Film getFilmById(Long id) {
-        return filmStorage.getFilmById(id);
+        isFilmExist(id);
+        return filmStorage
+                .getFilmsMap()
+                .get(id);
     }
 
     public void isFilmExist(Long id) {
-        if (!filmStorage.isFilmExist(id)) {
-            throw new NullPointerException("Фильм с id " + id + " не был найден.");
+        if (!filmStorage.getFilmsMap().containsKey(id)) {
+            throw new ValidationException("The movie with this id does not exist: " +
+                    "[Film id: " + id + "].");
         }
     }
 }

@@ -26,19 +26,7 @@ public class InMemoryFilmStorage implements FilmStorage{
     }
 
     @Override
-    public boolean isFilmExist(Long id) {
-        if (filmMap.containsKey(id)) {
-            return true;
-        } else return false;
-    }
-
-    @Override
     public Map<Long, Film> getFilmsMap() {
         return filmMap;
-    }
-
-    @Override
-    public Film getFilmById(Long id) {
-        return filmMap.get(id);
     }
 }

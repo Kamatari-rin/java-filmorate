@@ -1,44 +1,91 @@
 package ru.yandex.practicum.filmorate.service;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import javax.validation.ValidationException;
+import java.util.*;
 
 @Service
-@RequiredArgsConstructor
 public class UserService {
 
+    @Autowired
     private UserStorage userStorage;
 
-    public boolean addNewFriendToFriendlist() {
-        return true;
+    public User addNewFriend(Long id, Long friendId) {
+        isUserExist(id);
+        isUserExist(friendId);
+
+        getUserById(id)
+                .getFriends()
+                .add(friendId);
+
+        return getUserById(id);
     }
 
-    public boolean deleteFriendFromFriendlist() {
-        return true;
+    public User removeFriend(Long id, Long friendId) {
+        isUserExist(id);
+        isUserExist(friendId);
+
+        getUserById(id)
+                .getFriends()
+                .remove(friendId);
+
+        return getUserById(id);
     }
 
-    public List<Long> getFriendlistByUserId() {
-        return new ArrayList<>();
+    public List<Long> getFriendListByUserId(Long id) {
+        isUserExist(id);
+        return List.copyOf(getUserById(id).getFriends());
     }
 
-    public List<Long> getCommonFriendlistByuserId() {
-        return new ArrayList<>();
+    public List<Long> getCommonFriendListByUserId(Long id, Long otherUserId) {
+        final List<Long> commonFriendListByUserId = new ArrayList<>();
+        final List<Long> userFriendList = getFriendListByUserId(id);
+        final List<Long> otherUserFriendList = getFriendListByUserId(otherUserId);
+
+        for (Long friendId : userFriendList) {
+            if (otherUserFriendList.contains(friendId)) {
+                commonFriendListByUserId.add(friendId);
+            }
+        }
+
+        return commonFriendListByUserId;
+    }
+
+
+
+    public User addUser(User user) {
+        if (user.getName().isBlank() | user.getName() == null) {
+            user.setName(user.getLogin());
+        }
+        return userStorage.create(user);
+    }
+
+    public User updateUser(User user) {
+        isUserExist(user.getId());
+        return userStorage.update(user);
+    }
+
+    public List<User> getUsers() {
+        if (userStorage.getUsersMap() != null) {
+            return new ArrayList<User>(userStorage.getUsersMap().values());
+        } else throw new NullPointerException("Not a single User was found.");
+    }
+
+    public User getUserById(Long id) {
+        isUserExist(id);
+        return userStorage
+                .getUsersMap()
+                .get(id);
     }
 
     public void isUserExist(Long id) {
-        if (!userStorage.isUserExist(id)) {
-            throw new NullPointerException("Пользователь с id " + id + "не найден.");
+        if (!userStorage.getUsersMap().containsKey(id)) {
+            throw new ValidationException("The User with this id does not exist: " +
+                    "[User id: " + id + "].");
         }
-    }
-
-    public Map<Long, User> getUsers() {
-        return userStorage.getUsersMap();
     }
 }
