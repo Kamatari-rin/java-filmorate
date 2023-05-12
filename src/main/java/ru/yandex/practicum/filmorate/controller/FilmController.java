@@ -21,10 +21,10 @@ public class FilmController {
 
     @Autowired
     private FilmService filmService;
+
     public FilmController(FilmService filmService) {
         this.filmService = filmService;
     }
-
 
 ////////////////////////////////////////////    GET MAPPING    /////////////////////////////////////////////////////////
 
