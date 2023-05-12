@@ -12,16 +12,15 @@ import ru.yandex.practicum.filmorate.exception.AppException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @ControllerAdvice
 @Slf4j
 @RestController
 public class FilmController {
+
     @Autowired
     private FilmService filmService;
-
     public FilmController(FilmService filmService) {
         this.filmService = filmService;
     }
@@ -33,9 +32,9 @@ public class FilmController {
         return filmService.getAllFilms();
     }
 
-    @GetMapping("/films/popular?count={count}")
-    public List<Film> getPopularFilms() {
-        return new ArrayList<>();
+    @GetMapping("/films/popular")
+    public List<Film> getPopularFilms(@RequestParam int count) {
+        return filmService.getCountPopularFilms(count);
     }
 
 ///////////////////////////////////////////    POST MAPPING    /////////////////////////////////////////////////////////

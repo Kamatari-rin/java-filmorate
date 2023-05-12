@@ -55,8 +55,6 @@ public class UserService {
         return commonFriendListByUserId;
     }
 
-
-
     public User addUser(User user) {
         if (user.getName().isBlank() | user.getName() == null) {
             user.setName(user.getLogin());

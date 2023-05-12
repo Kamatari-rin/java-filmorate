@@ -1,24 +1,18 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import javax.validation.Valid;
-import javax.validation.ValidationException;
 import javax.validation.constraints.NotNull;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.AppException;
-import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @RestController
@@ -26,7 +20,6 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
     public UserController(UserService userService) {
         this.userService = userService;
     }
@@ -83,7 +76,6 @@ public class UserController {
 
 /////////////////////////////////////////    DELETE MAPPING    /////////////////////////////////////////////////////////
 
-
     @DeleteMapping("/users/{id}/friends/{friendId}")
     public ResponseEntity<User> removeUserFromFriendList(@PathVariable Long id, @PathVariable Long friendId) {
         try {
@@ -94,5 +86,4 @@ public class UserController {
             throw new AppException(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
-
 }

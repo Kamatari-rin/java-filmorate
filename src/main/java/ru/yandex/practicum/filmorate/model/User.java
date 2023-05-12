@@ -12,6 +12,7 @@ import java.util.Set;
 
 @Data
 public class User {
+
     private Long id;
     @Email(message = "Incorrect email.")
     @NotNull(message = "email cannot be empty.")

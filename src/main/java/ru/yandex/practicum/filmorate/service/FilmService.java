@@ -6,8 +6,8 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
 import javax.validation.ValidationException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class FilmService {
@@ -16,6 +16,16 @@ public class FilmService {
     private FilmStorage filmStorage;
     @Autowired
     private UserService userService;
+    private final Comparator<Film> comparator = Comparator.comparing(Film::getLikes, Comparator.comparing(Set::size)).reversed();
+    private final TreeSet<Film> mostPopularFilms = new TreeSet<>(comparator);
+
+    public List<Film> getCountPopularFilms(int count) {
+        final List<Film> popularFilms = mostPopularFilms
+                .stream()
+                .limit(count)
+                .collect(Collectors.toList());
+        return popularFilms;
+    }
 
     public Film addLike(Long filmId, Long userId ) {
         userService.isUserExist(userId);
@@ -24,6 +34,8 @@ public class FilmService {
         getFilmById(filmId)
                 .getLikes()
                 .add(userId);
+
+        mostPopularFilms.add(getFilmById(filmId));
 
         return filmStorage
                 .getFilmsMap()
@@ -37,6 +49,8 @@ public class FilmService {
         getFilmById(filmId)
                 .getLikes()
                 .remove(userId);
+
+        mostPopularFilms.add(getFilmById(filmId));
 
         return filmStorage
                 .getFilmsMap()
