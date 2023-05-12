@@ -7,6 +7,8 @@ import java.util.Map;
 public interface UserStorage {
 
     Map<Long, User> getUsersMap();
+
     User create(User user);
+
     User update(User user);
 }
