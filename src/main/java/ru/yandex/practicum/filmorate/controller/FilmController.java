@@ -25,6 +25,7 @@ public class FilmController {
         this.filmService = filmService;
     }
 
+
 ////////////////////////////////////////////    GET MAPPING    /////////////////////////////////////////////////////////
 
     @GetMapping("/films")
@@ -49,14 +50,13 @@ public class FilmController {
         }
     }
 
-
 ////////////////////////////////////////////    PUT MAPPING    /////////////////////////////////////////////////////////
 
     @PutMapping("/films")
     public ResponseEntity<Film> update(@RequestBody @Valid @NotNull Film film) {
         try {
             return new ResponseEntity<Film>(filmService.updateFilm(film), HttpStatus.OK);
-        } catch (Exception e){
+        } catch (Exception e) {
             log.warn("Request for movie with non-existent id:" + film.getId() + ".");
             throw new AppException(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
