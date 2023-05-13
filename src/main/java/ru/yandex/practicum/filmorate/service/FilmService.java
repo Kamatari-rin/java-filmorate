@@ -19,12 +19,20 @@ public class FilmService {
     private final Comparator<Film> comparator = Comparator.comparing(Film::getLikes, Comparator.comparing(Set::size)).reversed();
     private final TreeSet<Film> mostPopularFilms = new TreeSet<>(comparator);
 
-    public List<Film> getCountPopularFilms(int count) {
-        final List<Film> popularFilms = mostPopularFilms
-                .stream()
-                .limit(count)
-                .collect(Collectors.toList());
-        return popularFilms;
+    public List<Film> getCountPopularFilms(Integer count) {
+        List<Film> popularFilms = new ArrayList<>();
+
+        if (count == 0) {
+            popularFilms = mostPopularFilms
+                    .stream()
+                    .collect(Collectors.toList());
+        } else {
+            popularFilms = mostPopularFilms
+                    .stream()
+                    .limit(count)
+                    .collect(Collectors.toList());
+            return popularFilms;
+        }
     }
 
     public Film addLike(Long filmId, Long userId) {
