@@ -20,7 +20,7 @@ public class UserService {
 
         getUserById(id)
                 .getFriends()
-                .add(friendId);
+                .add(getUserById(friendId));
 
         return getUserById(id);
     }
@@ -31,7 +31,7 @@ public class UserService {
 
         getUserById(id)
                 .getFriends()
-                .remove(friendId);
+                .remove(getUserById(friendId));
 
         return getUserById(id);
     }
@@ -39,23 +39,23 @@ public class UserService {
     public List<User> getFriendListByUserId(Long id) {
         isUserExist(id);
 
-        final List<User> friendList = new ArrayList<>();
-        final List<Long> userFriendList = List.copyOf(getUserById(id).getFriends());
-
-        for (Long friendId : userFriendList) {
-            friendList.add(getUserById(friendId));
-        }
-        return friendList;
+//        final List<User> friendList = new ArrayList<>();
+//        final List<Long> userFriendList = List.copyOf(getUserById(id).getFriends());
+//
+//        for (Long friendId : userFriendList) {
+//            friendList.add(getUserById(friendId));
+//        }
+        return List.copyOf(getUserById(id).getFriends());
     }
 
     public List<User> getCommonFriendListByUserId(Long id, Long otherUserId) {
         final List<User> commonFriendListByUserId = new ArrayList<>();
-        final List<Long> userFriendList = List.copyOf(getUserById(id).getFriends());
-        final List<Long> otherUserFriendList = List.copyOf(getUserById(otherUserId).getFriends());
+        final List<User> userFriendList = List.copyOf(getUserById(id).getFriends());
+        final List<User> otherUserFriendList = List.copyOf(getUserById(otherUserId).getFriends());
 
-        for (Long friendId : userFriendList) {
-            if (otherUserFriendList.contains(friendId)) {
-                commonFriendListByUserId.add(getUserById(friendId));
+        for (User user : userFriendList) {
+            if (otherUserFriendList.contains(user)) {
+                commonFriendListByUserId.add(user);
             }
         }
 
