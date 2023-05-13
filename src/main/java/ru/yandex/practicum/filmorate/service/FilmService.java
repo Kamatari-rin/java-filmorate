@@ -22,7 +22,7 @@ public class FilmService {
     public List<Film> getCountPopularFilms(Integer count) {
         List<Film> popularFilms = new ArrayList<>();
 
-        if (count == 0) {
+        if (count == -1) {
             popularFilms = new ArrayList<>(mostPopularFilms);
         } else {
             popularFilms = mostPopularFilms
