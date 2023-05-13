@@ -33,6 +33,15 @@ public class UserController {
         return userService.getUsers();
     }
 
+    @GetMapping("/users/{id}")
+    public User getUser(@PathVariable Long id) {
+        try {
+            return userService.getUserById(id);
+        } catch (Exception e) {
+            throw new AppException(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
     @GetMapping("/users/{id}/friends")
     public List<User> getUserFriendList(@PathVariable Long id) {
         log.debug("The user list was successfully retrieved.");
