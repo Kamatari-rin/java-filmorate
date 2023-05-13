@@ -23,9 +23,7 @@ public class FilmService {
         List<Film> popularFilms = new ArrayList<>();
 
         if (count == 0) {
-            popularFilms = mostPopularFilms
-                    .stream()
-                    .collect(Collectors.toList());
+            popularFilms = new ArrayList<>(mostPopularFilms);
         } else {
             popularFilms = mostPopularFilms
                     .stream()
