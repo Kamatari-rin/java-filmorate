@@ -22,6 +22,10 @@ public class UserService {
                 .getFriends()
                 .add(friendId);
 
+        getUserById(friendId)
+                .getFriends()
+                .add(id);
+
         return getUserById(id);
     }
 
@@ -32,6 +36,10 @@ public class UserService {
         getUserById(id)
                 .getFriends()
                 .remove(friendId);
+
+        getUserById(friendId)
+                .getFriends()
+                .remove(id);
 
         return getUserById(id);
     }
