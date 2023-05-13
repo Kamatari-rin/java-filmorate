@@ -65,7 +65,7 @@ public class FilmService {
 
     public Film addFilm(Film film) {
         Film newFilm = filmStorage.add(film);
-        mostPopularFilms.add(newFilm);
+        // mostPopularFilms.add(newFilm);
         return newFilm;
     }
 
