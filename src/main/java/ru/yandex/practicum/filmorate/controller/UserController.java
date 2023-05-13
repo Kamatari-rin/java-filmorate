@@ -40,9 +40,9 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}/friends/common/{otherId}")
-    public List<User> getUserCommonFriendList() {
+    public List<User> getUserCommonFriendList(@PathVariable Long id, @PathVariable Long otherId) {
         log.debug("The user list was successfully retrieved.");
-        return userService.getUsers();
+        return userService.getCommonFriendListByUserId(id, otherId);
     }
 
 ///////////////////////////////////////////    POST MAPPING    /////////////////////////////////////////////////////////

@@ -35,7 +35,11 @@ public class FilmController {
 
     @GetMapping("/films/{id}")
     public Film getFilmById(@PathVariable Long id) {
-        return filmService.getFilmById(id);
+        try {
+            return filmService.getFilmById(id);
+        } catch (Exception e) {
+            throw new AppException(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/films/popular")

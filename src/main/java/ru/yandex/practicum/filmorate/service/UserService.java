@@ -41,14 +41,14 @@ public class UserService {
         return List.copyOf(getUserById(id).getFriends());
     }
 
-    public List<Long> getCommonFriendListByUserId(Long id, Long otherUserId) {
-        final List<Long> commonFriendListByUserId = new ArrayList<>();
+    public List<User> getCommonFriendListByUserId(Long id, Long otherUserId) {
+        final List<User> commonFriendListByUserId = new ArrayList<>();
         final List<Long> userFriendList = getFriendListByUserId(id);
         final List<Long> otherUserFriendList = getFriendListByUserId(otherUserId);
 
         for (Long friendId : userFriendList) {
             if (otherUserFriendList.contains(friendId)) {
-                commonFriendListByUserId.add(friendId);
+                commonFriendListByUserId.add(getUserById(friendId));
             }
         }
 
