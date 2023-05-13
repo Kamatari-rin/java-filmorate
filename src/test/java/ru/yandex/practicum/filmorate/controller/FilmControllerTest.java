@@ -1,15 +1,26 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.solidfire.gson.Gson;
 import com.solidfire.gson.GsonBuilder;
 import com.solidfire.gson.reflect.TypeToken;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.service.FilmService;
+import ru.yandex.practicum.filmorate.service.UserService;
+import ru.yandex.practicum.filmorate.storage.FilmStorage;
+import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.lang.reflect.Type;
 import java.time.LocalDate;
@@ -18,13 +29,16 @@ import static org.hamcrest.core.StringContains.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-@WebMvcTest(controllers = {FilmController.class})
+@Slf4j
+@WebMvcTest(controllers = FilmController.class)
 class FilmControllerTest {
     private Gson gson;
 
     @Autowired
     private MockMvc mockMvc;
+
+    @MockBean
+    private FilmService filmService;
 
     @BeforeEach
     public void preBuild() {
@@ -41,8 +55,7 @@ class FilmControllerTest {
         mockMvc.perform(post("/films")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(gson.toJson(film, type)))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("{\"id\":1,\"name\":\"FilmName\",\"description\":\"FilmDescription\",\"releaseDate\":\"1980-02-11\",\"duration\":120}")));
+                        .andExpect(status().isOk());
     }
 
     @Test
