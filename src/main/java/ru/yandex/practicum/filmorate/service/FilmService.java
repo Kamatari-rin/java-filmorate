@@ -16,7 +16,7 @@ public class FilmService {
     private FilmStorage filmStorage;
     @Autowired
     private UserService userService;
-    private final Comparator<Film> comparator = Comparator.comparing(Film::getLikes, Comparator.nullsFirst(Comparator.comparing(Set::size))).reversed();
+    private final Comparator<Film> comparator = Comparator.comparing(Film::getLikes, Comparator.nullsLast(Comparator.comparing(Set::size))).reversed();
     private final TreeSet<Film> mostPopularFilms = new TreeSet<>(comparator);
 
     public List<Film> getCountPopularFilms(Integer count) {
