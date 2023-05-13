@@ -31,8 +31,8 @@ public class FilmService {
                     .stream()
                     .limit(count)
                     .collect(Collectors.toList());
-            return popularFilms;
         }
+        return popularFilms;
     }
 
     public Film addLike(Long filmId, Long userId) {
