@@ -18,10 +18,19 @@ public class FilmService {
     private UserService userService;
 
     public List<Film> getCountPopularFilms(Integer count) {
-        return new ArrayList<Film>(filmStorage.getFilmsMap().values()).stream()
-                .sorted(Comparator.comparingInt((Film film) -> film.getLikes().size()).reversed())
-                .limit(count)
-                .collect(Collectors.toList());
+        List<Film> popularFilms = new ArrayList<>();
+
+        if (count == -1) {
+            popularFilms = new ArrayList<Film>(filmStorage.getFilmsMap().values()).stream()
+                    .sorted(Comparator.comparingInt((Film film) -> film.getLikes().size()).reversed())
+                    .collect(Collectors.toList());
+        } else {
+            popularFilms = new ArrayList<Film>(filmStorage.getFilmsMap().values()).stream()
+                    .sorted(Comparator.comparingInt((Film film) -> film.getLikes().size()).reversed())
+                    .limit(count)
+                    .collect(Collectors.toList());
+        }
+        return popularFilms;
     }
 
     public Film addLike(Long filmId, Long userId) {
