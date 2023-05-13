@@ -60,7 +60,7 @@ public class UserController {
         try {
             return new ResponseEntity<User>(userService.updateUser(user), HttpStatus.OK);
         } catch (Exception e) {
-            throw new AppException(e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new AppException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -71,7 +71,7 @@ public class UserController {
         } catch (Exception e) {
             log.warn("The Users with this id does not exist: " +
                     "[User id: " + id + "], [Friend id: " + friendId + "].");
-            throw new AppException(e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new AppException(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 

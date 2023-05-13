@@ -58,7 +58,7 @@ public class FilmController {
             return new ResponseEntity<Film>(filmService.updateFilm(film), HttpStatus.OK);
         } catch (Exception e) {
             log.warn("Request for movie with non-existent id:" + film.getId() + ".");
-            throw new AppException(e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new AppException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -83,7 +83,7 @@ public class FilmController {
         } catch (Exception e) {
             log.warn("The user or movie with this id does not exist: " +
                     "[Film id: " + id + "], [User id: " + userId + "]" + ".");
-            throw new AppException(e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new AppException(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 }
