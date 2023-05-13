@@ -36,15 +36,22 @@ public class UserService {
         return getUserById(id);
     }
 
-    public List<Long> getFriendListByUserId(Long id) {
+    public List<User> getFriendListByUserId(Long id) {
         isUserExist(id);
-        return List.copyOf(getUserById(id).getFriends());
+
+        final List<User> friendList = new ArrayList<>();
+        final List<Long> userFriendList = List.copyOf(getUserById(id).getFriends());
+
+        for (Long friendId : userFriendList) {
+            friendList.add(getUserById(friendId));
+        }
+        return friendList;
     }
 
     public List<User> getCommonFriendListByUserId(Long id, Long otherUserId) {
         final List<User> commonFriendListByUserId = new ArrayList<>();
-        final List<Long> userFriendList = getFriendListByUserId(id);
-        final List<Long> otherUserFriendList = getFriendListByUserId(otherUserId);
+        final List<Long> userFriendList = List.copyOf(getUserById(id).getFriends());
+        final List<Long> otherUserFriendList = List.copyOf(getUserById(otherUserId).getFriends());
 
         for (Long friendId : userFriendList) {
             if (otherUserFriendList.contains(friendId)) {
