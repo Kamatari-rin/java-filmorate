@@ -16,21 +16,12 @@ public class FilmService {
     private FilmStorage filmStorage;
     @Autowired
     private UserService userService;
-    private final Comparator<Film> comparator = Comparator.comparing(Film::getLikes, Comparator.nullsLast(Comparator.comparing(Set::size))).reversed();
-    private final TreeSet<Film> mostPopularFilms = new TreeSet<>(comparator);
 
     public List<Film> getCountPopularFilms(Integer count) {
-        List<Film> popularFilms = new ArrayList<>();
-
-        if (count == -1) {
-            popularFilms = new ArrayList<>(mostPopularFilms);
-        } else {
-            popularFilms = mostPopularFilms
-                    .stream()
-                    .limit(count)
-                    .collect(Collectors.toList());
-        }
-        return popularFilms;
+        return new ArrayList<Film>(filmStorage.getFilmsMap().values()).stream()
+                .sorted(Comparator.comparingInt((Film film) -> film.getLikes().size()).reversed())
+                .limit(count)
+                .collect(Collectors.toList());
     }
 
     public Film addLike(Long filmId, Long userId) {
@@ -40,8 +31,6 @@ public class FilmService {
         getFilmById(filmId)
                 .getLikes()
                 .add(userId);
-
-        mostPopularFilms.add(getFilmById(filmId));
 
         return filmStorage
                 .getFilmsMap()
@@ -56,8 +45,6 @@ public class FilmService {
                 .getLikes()
                 .remove(userId);
 
-        mostPopularFilms.add(getFilmById(filmId));
-
         return filmStorage
                 .getFilmsMap()
                 .get(filmId);
@@ -65,7 +52,6 @@ public class FilmService {
 
     public Film addFilm(Film film) {
         Film newFilm = filmStorage.add(film);
-        mostPopularFilms.add(newFilm);
         return newFilm;
     }
 
