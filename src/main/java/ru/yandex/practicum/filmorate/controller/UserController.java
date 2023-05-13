@@ -43,9 +43,9 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}/friends")
-    public List<User> getUserFriendList(@PathVariable Long id) {
+    public ResponseEntity<List<User>> getUserFriendList(@PathVariable Long id) {
         try {
-            return userService.getFriendListByUserId(id);
+            return new ResponseEntity<List<User>>(userService.getFriendListByUserId(id), HttpStatus.OK);
         } catch (Exception e) {
             log.warn("The Users with this id does not exist: " +
                     "[User id: " + id + "].");
@@ -54,9 +54,9 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}/friends/common/{otherId}")
-    public List<User> getUserCommonFriendList(@PathVariable Long id, @PathVariable Long otherId) {
+    public ResponseEntity<List<User>> getUserCommonFriendList(@PathVariable Long id, @PathVariable Long otherId) {
         try {
-            return userService.getCommonFriendListByUserId(id, otherId);
+            return new ResponseEntity<List<User>>(userService.getCommonFriendListByUserId(id, otherId), HttpStatus.OK);
         } catch (Exception e) {
             log.warn("The Users with this id does not exist: " +
                     "[User id: " + id + "], [Friend id: " + otherId + "].");

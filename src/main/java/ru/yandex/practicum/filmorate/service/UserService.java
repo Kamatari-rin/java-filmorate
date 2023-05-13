@@ -49,6 +49,9 @@ public class UserService {
     }
 
     public List<User> getCommonFriendListByUserId(Long id, Long otherUserId) {
+        isUserExist(id);
+        isUserExist(otherUserId);
+
         final List<User> commonFriendListByUserId = new ArrayList<>();
         final List<Long> userFriendList = List.copyOf(getUserById(id).getFriends());
         final List<Long> otherUserFriendList = List.copyOf(getUserById(otherUserId).getFriends());
