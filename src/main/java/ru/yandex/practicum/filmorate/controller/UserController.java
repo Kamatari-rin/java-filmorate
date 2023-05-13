@@ -44,14 +44,24 @@ public class UserController {
 
     @GetMapping("/users/{id}/friends")
     public List<User> getUserFriendList(@PathVariable Long id) {
-        log.debug("The user list was successfully retrieved.");
-        return userService.getFriendListByUserId(id);
+        try {
+            return userService.getFriendListByUserId(id);
+        } catch (Exception e) {
+            log.warn("The Users with this id does not exist: " +
+                    "[User id: " + id + "].");
+            throw new AppException(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/users/{id}/friends/common/{otherId}")
     public List<User> getUserCommonFriendList(@PathVariable Long id, @PathVariable Long otherId) {
-        log.debug("The user list was successfully retrieved.");
-        return userService.getCommonFriendListByUserId(id, otherId);
+        try {
+            return userService.getCommonFriendListByUserId(id, otherId);
+        } catch (Exception e) {
+            log.warn("The Users with this id does not exist: " +
+                    "[User id: " + id + "], [Friend id: " + otherId + "].");
+            throw new AppException(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 
 ///////////////////////////////////////////    POST MAPPING    /////////////////////////////////////////////////////////
