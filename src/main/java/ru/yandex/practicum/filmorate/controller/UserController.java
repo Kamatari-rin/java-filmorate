@@ -34,9 +34,9 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}/friends")
-    public List<User> getUserFriendList() {
+    public List<User> getUserFriendList(@PathVariable Long id) {
         log.debug("The user list was successfully retrieved.");
-        return userService.getUsers();
+        return userService.getFriendListByUserId(id);
     }
 
     @GetMapping("/users/{id}/friends/common/{otherId}")
