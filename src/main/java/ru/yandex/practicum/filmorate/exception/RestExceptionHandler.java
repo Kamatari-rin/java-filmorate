@@ -17,6 +17,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
@@ -55,6 +56,17 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 apiError, new HttpHeaders(), apiError.getStatus());
     }
 
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<Object> nullPointExceptionHandler(
+            AppException ex) {
+        String error = ex.getErrorMessage();
+
+        ApiError apiError =
+                new ApiError(HttpStatus.NOT_FOUND, ex.getErrorMessage(), error);
+        return new ResponseEntity<Object>(
+                apiError, new HttpHeaders(), apiError.getStatus());
+    }
+
     @ExceptionHandler({ ConstraintViolationException.class })
     public ResponseEntity<Object> handleConstraintViolation(
             ConstraintViolationException ex, WebRequest request) {
@@ -82,8 +94,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 apiError, new HttpHeaders(), apiError.getStatus());
     }
 
-    @ExceptionHandler(NullPointerException.class)
-    public ResponseEntity<Object> nullPointExceptionHandler(
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<Object> nulPointExceptionHandler(
             AppException ex) {
         String error = ex.getErrorMessage();
 
