@@ -31,7 +31,11 @@ public class FilmController {
 
     @GetMapping("/films/{id}")
     public Film getFilmById(@PathVariable Long id) {
-        return filmService.getFilmById(id);
+        try {
+            return filmService.getFilmById(id);
+        } catch (Throwable e) {
+            throw new AppException(e.getClass().toString(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/films/popular")
@@ -59,10 +63,9 @@ public class FilmController {
     public ResponseEntity<Film> likeTheFilm(@PathVariable Long id, @PathVariable Long userid) {
         try {
             return new ResponseEntity<Film>(filmService.addLike(id, userid), HttpStatus.OK);
-        } catch (Exception e) {
+        } catch (Throwable e) {
             throw new AppException(e.getClass().toString(), HttpStatus.NOT_FOUND);
         }
-
     }
 
 /////////////////////////////////////////    DELETE MAPPING    /////////////////////////////////////////////////////////

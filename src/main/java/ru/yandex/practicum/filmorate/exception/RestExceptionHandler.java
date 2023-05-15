@@ -66,32 +66,32 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 apiError, new HttpHeaders(), apiError.getStatus());
     }
 
-    @ExceptionHandler({ ConstraintViolationException.class })
-    public ResponseEntity<Object> handleConstraintViolation(
-            ConstraintViolationException ex, WebRequest request) {
-        List<String> errors = new ArrayList<String>();
-        for (ConstraintViolation<?> violation : ex.getConstraintViolations()) {
-            errors.add(violation.getRootBeanClass().getName() + " " +
-                    violation.getPropertyPath() + ": " + violation.getMessage());
-        }
+//    @ExceptionHandler(ConstraintViolationException.class)
+//    public ResponseEntity<Object> handleConstraintViolation(
+//            ConstraintViolationException ex, WebRequest request) {
+//        List<String> errors = new ArrayList<String>();
+//        for (ConstraintViolation<?> violation : ex.getConstraintViolations()) {
+//            errors.add(violation.getRootBeanClass().getName() + " " +
+//                    violation.getPropertyPath() + ": " + violation.getMessage());
+//        }
+//
+//        ApiError apiError =
+//                new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), errors);
+//        return new ResponseEntity<Object>(
+//                apiError, new HttpHeaders(), apiError.getStatus());
+//    }
 
-        ApiError apiError =
-                new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), errors);
-        return new ResponseEntity<Object>(
-                apiError, new HttpHeaders(), apiError.getStatus());
-    }
-
-    @ExceptionHandler({ MethodArgumentTypeMismatchException.class })
-    public ResponseEntity<Object> handleMethodArgumentTypeMismatch(
-            MethodArgumentTypeMismatchException ex, WebRequest request) {
-        String error =
-                ex.getName() + " should be of type " + ex.getRequiredType().getName();
-
-        ApiError apiError =
-                new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), error);
-        return new ResponseEntity<Object>(
-                apiError, new HttpHeaders(), apiError.getStatus());
-    }
+//    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+//    public ResponseEntity<Object> handleMethodArgumentTypeMismatch(
+//            MethodArgumentTypeMismatchException ex, WebRequest request) {
+//        String error =
+//                ex.getName() + " should be of type " + ex.getRequiredType().getName();
+//
+//        ApiError apiError =
+//                new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), error);
+//        return new ResponseEntity<Object>(
+//                apiError, new HttpHeaders(), apiError.getStatus());
+//    }
 
     @ExceptionHandler(AppException.class)
     public ResponseEntity<Object> apiExceptionHandler(
