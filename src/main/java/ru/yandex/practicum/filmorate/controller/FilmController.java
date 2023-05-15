@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.filmorate.exception.AppException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
 
@@ -56,7 +57,12 @@ public class FilmController {
 
     @PutMapping("/films/{id}/like/{userid}")
     public ResponseEntity<Film> likeTheFilm(@PathVariable Long id, @PathVariable Long userid) {
-        return new ResponseEntity<Film>(filmService.addLike(id, userid), HttpStatus.OK);
+        try {
+            return new ResponseEntity<Film>(filmService.addLike(id, userid), HttpStatus.OK);
+        } catch (Exception e) {
+            throw new AppException(e.getClass().toString(), HttpStatus.NOT_FOUND);
+        }
+
     }
 
 /////////////////////////////////////////    DELETE MAPPING    /////////////////////////////////////////////////////////
