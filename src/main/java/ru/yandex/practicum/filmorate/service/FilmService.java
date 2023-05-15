@@ -84,7 +84,7 @@ public class FilmService {
 
     public void isFilmExist(Long id) {
         if (!filmStorage.getFilmsMap().containsKey(id)) {
-            throw new ValidationException("The movie with this id does not exist: " +
+            throw new NullPointerException("The movie with this id does not exist: " +
                     "[Film id: " + id + "].");
         }
     }
