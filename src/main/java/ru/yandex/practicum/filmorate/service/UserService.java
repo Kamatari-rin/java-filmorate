@@ -1,18 +1,17 @@
 package ru.yandex.practicum.filmorate.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
-import javax.validation.ValidationException;
 import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
-    @Autowired
-    private UserStorage userStorage;
+    private final UserStorage userStorage;
 
     public User addNewFriend(Long id, Long friendId) {
         isUserExist(id);
@@ -100,7 +99,7 @@ public class UserService {
 
     public void isUserExist(Long id) {
         if (!userStorage.getUsersMap().containsKey(id)) {
-            throw new ValidationException("The User with this id does not exist: " +
+            throw new NullPointerException("The User with this id does not exist: " +
                     "[User id: " + id + "].");
         }
     }

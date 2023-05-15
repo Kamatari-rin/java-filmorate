@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import javax.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,24 +52,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 apiError, new HttpHeaders(), apiError.getStatus());
     }
 
-    @ExceptionHandler({NullPointerException.class, ValidationException.class})
+    @ExceptionHandler(NullPointerException.class)
     public ResponseEntity<Object> nullPointExceptionHandler(
-            AppException ex) {
-        String error = ex.getErrorMessage();
+            NullPointerException ex) {
+        String error = ex.getMessage();
 
         ApiError apiError =
-                new ApiError(HttpStatus.NOT_FOUND, ex.getErrorMessage(), error);
-        return new ResponseEntity<Object>(
-                apiError, new HttpHeaders(), apiError.getStatus());
-    }
-
-    @ExceptionHandler(AppException.class)
-    public ResponseEntity<Object> apiExceptionHandler(
-            AppException ex) {
-        String error = ex.getErrorMessage();
-
-        ApiError apiError =
-                new ApiError(ex.responseStatus, ex.getErrorMessage(), error);
+                new ApiError(HttpStatus.NOT_FOUND, ex.getMessage(), error);
         return new ResponseEntity<Object>(
                 apiError, new HttpHeaders(), apiError.getStatus());
     }

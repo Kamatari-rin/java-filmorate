@@ -3,12 +3,11 @@ package ru.yandex.practicum.filmorate.controller;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exception.AppException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
 
@@ -16,59 +15,37 @@ import java.util.List;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 public class UserController {
 
-    @Autowired
-    private UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    private final UserService userService;
 
 ////////////////////////////////////////////    GET MAPPING    /////////////////////////////////////////////////////////
 
     @GetMapping("/users")
     public List<User> getUsersList() {
-        log.debug("The user list was successfully retrieved.");
         return userService.getUsers();
     }
 
     @GetMapping("/users/{id}")
     public User getUser(@PathVariable Long id) {
-        try {
-            return userService.getUserById(id);
-        } catch (Exception e) {
-            throw new AppException(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
+        return userService.getUserById(id);
     }
 
     @GetMapping("/users/{id}/friends")
     public ResponseEntity<List<User>> getUserFriendList(@PathVariable Long id) {
-        try {
-            return new ResponseEntity<List<User>>(userService.getFriendListByUserId(id), HttpStatus.OK);
-        } catch (Exception e) {
-            log.warn("The Users with this id does not exist: " +
-                    "[User id: " + id + "].");
-            throw new AppException(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<List<User>>(userService.getFriendListByUserId(id), HttpStatus.OK);
     }
 
     @GetMapping("/users/{id}/friends/common/{otherId}")
     public ResponseEntity<List<User>> getUserCommonFriendList(@PathVariable Long id, @PathVariable Long otherId) {
-        try {
-            return new ResponseEntity<List<User>>(userService.getCommonFriendListByUserId(id, otherId), HttpStatus.OK);
-        } catch (Exception e) {
-            log.warn("The Users with this id does not exist: " +
-                    "[User id: " + id + "], [Friend id: " + otherId + "].");
-            throw new AppException(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<List<User>>(userService.getCommonFriendListByUserId(id, otherId), HttpStatus.OK);
     }
 
 ///////////////////////////////////////////    POST MAPPING    /////////////////////////////////////////////////////////
 
     @PostMapping(value = "/users")
     public ResponseEntity<User> create(@Valid @RequestBody User user) {
-        log.debug("The user " + user.getName() + " has been successfully created.");
         return new ResponseEntity<User>(userService.addUser(user), HttpStatus.OK);
     }
 
@@ -76,34 +53,18 @@ public class UserController {
 
     @PutMapping(value = "/users")
     public ResponseEntity<User> update(@RequestBody @Valid @NotNull User user) {
-        try {
-            return new ResponseEntity<User>(userService.updateUser(user), HttpStatus.OK);
-        } catch (Exception e) {
-            throw new AppException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return new ResponseEntity<User>(userService.updateUser(user), HttpStatus.OK);
     }
 
     @PutMapping(value = "/users/{id}/friends/{friendId}")
     public ResponseEntity<User> addUserInFriendList(@PathVariable Long id, @PathVariable Long friendId) {
-        try {
-            return new ResponseEntity<User>(userService.addNewFriend(id, friendId), HttpStatus.OK);
-        } catch (Exception e) {
-            log.warn("The Users with this id does not exist: " +
-                    "[User id: " + id + "], [Friend id: " + friendId + "].");
-            throw new AppException(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<User>(userService.addNewFriend(id, friendId), HttpStatus.OK);
     }
 
 /////////////////////////////////////////    DELETE MAPPING    /////////////////////////////////////////////////////////
 
     @DeleteMapping("/users/{id}/friends/{friendId}")
     public ResponseEntity<User> removeUserFromFriendList(@PathVariable Long id, @PathVariable Long friendId) {
-        try {
-            return new ResponseEntity<User>(userService.removeFriend(id, friendId), HttpStatus.OK);
-        } catch (Exception e) {
-            log.warn("The Users with this id does not exist: " +
-                    "[User id: " + id + "], [Friend id: " + friendId + "].");
-            throw new AppException(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<User>(userService.removeFriend(id, friendId), HttpStatus.OK);
     }
 }
