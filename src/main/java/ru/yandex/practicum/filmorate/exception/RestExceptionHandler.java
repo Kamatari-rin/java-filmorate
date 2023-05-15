@@ -82,6 +82,17 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 apiError, new HttpHeaders(), apiError.getStatus());
     }
 
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<Object> nullPointExceptionHandler(
+            AppException ex) {
+        String error = ex.getErrorMessage();
+
+        ApiError apiError =
+                new ApiError(HttpStatus.NOT_FOUND, ex.getErrorMessage(), error);
+        return new ResponseEntity<Object>(
+                apiError, new HttpHeaders(), apiError.getStatus());
+    }
+
     @ExceptionHandler(AppException.class)
     public ResponseEntity<Object> apiExceptionHandler(
             AppException ex) {
