@@ -7,24 +7,28 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.service.FilmService;
 
 import java.lang.reflect.Type;
 import java.time.LocalDate;
 
-import static org.hamcrest.core.StringContains.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = {FilmController.class})
+@WebMvcTest(controllers = FilmController.class)
 class FilmControllerTest {
     private Gson gson;
 
     @Autowired
     private MockMvc mockMvc;
+
+    @MockBean
+    private FilmService filmService;
 
     @BeforeEach
     public void preBuild() {
@@ -41,8 +45,7 @@ class FilmControllerTest {
         mockMvc.perform(post("/films")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(gson.toJson(film, type)))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("{\"id\":1,\"name\":\"FilmName\",\"description\":\"FilmDescription\",\"releaseDate\":\"1980-02-11\",\"duration\":120}")));
+                        .andExpect(status().isOk());
     }
 
     @Test
@@ -64,6 +67,6 @@ class FilmControllerTest {
         mockMvc.perform(post("/films")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(gson.toJson(filmNegativeDuration, type)))
-                .andExpect(status().isBadRequest());
+                        .andExpect(status().isBadRequest());
     }
 }
