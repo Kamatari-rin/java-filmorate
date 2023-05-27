@@ -22,11 +22,22 @@ public class Film {
     @FilmDuration(message = "Film duration should be positive.")
     private int duration;
     private final Set<Long> likes = new HashSet<>();
+    private Set<Genre> genres = new HashSet<>();
+    private MpaRating rating;
 
-    public Film(String name, String description, LocalDate releaseDate, int duration) {
+    public Film(String name,
+                String description,
+                LocalDate releaseDate,
+                int duration,
+                Set<Genre> genres,
+                MpaRating rating) {
         this.name = name;
         this.description = description;
         this.releaseDate = releaseDate;
         this.duration = duration;
+        this.genres = genres;
+        this.rating = rating;
     }
+
+    public Film(){}
 }

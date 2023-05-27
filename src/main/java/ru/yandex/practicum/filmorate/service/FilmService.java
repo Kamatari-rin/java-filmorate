@@ -33,9 +33,6 @@ public class FilmService {
     }
 
     public Film addLike(Long filmId, Long userId) {
-        userService.isUserExist(userId);
-        isFilmExist(filmId);
-
         getFilmById(filmId)
                 .getLikes()
                 .add(userId);
@@ -46,9 +43,6 @@ public class FilmService {
     }
 
     public Film removeLike(Long filmId, Long userId) {
-        userService.isUserExist(userId);
-        isFilmExist(filmId);
-
         getFilmById(filmId)
                 .getLikes()
                 .remove(userId);
@@ -64,7 +58,6 @@ public class FilmService {
     }
 
     public Film updateFilm(Film film) {
-        isFilmExist(film.getId());
         return filmStorage.update(film);
     }
 
@@ -75,16 +68,8 @@ public class FilmService {
     }
 
     public Film getFilmById(Long id) {
-        isFilmExist(id);
         return filmStorage
                 .getFilmsMap()
                 .get(id);
-    }
-
-    public void isFilmExist(Long id) {
-        if (!filmStorage.getFilmsMap().containsKey(id)) {
-            throw new NullPointerException("The movie with this id does not exist: " +
-                    "[Film id: " + id + "].");
-        }
     }
 }

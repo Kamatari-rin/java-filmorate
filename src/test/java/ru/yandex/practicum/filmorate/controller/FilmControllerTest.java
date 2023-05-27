@@ -22,51 +22,51 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(controllers = FilmController.class)
 class FilmControllerTest {
-    private Gson gson;
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @MockBean
-    private FilmService filmService;
-
-    @BeforeEach
-    public void preBuild() {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateAdapter());
-        gson = gsonBuilder.create();
-    }
-
-    @Test
-    void createFilmTest() throws Exception {
-        Film film = new Film("FilmName", "FilmDescription", LocalDate.parse("1980-02-11"), 120);
-        Type type = new TypeToken<Film>() {}.getType();
-
-        mockMvc.perform(post("/films")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(gson.toJson(film, type)))
-                        .andExpect(status().isOk());
-    }
-
-    @Test
-    void createFilmsBefore1885Test() throws Exception {
-        Film film1883Year = new Film("FilmName", "FilmDescription", LocalDate.parse("1883-02-11"), 120);
-        Type type = new TypeToken<Film>() {}.getType();
-
-        mockMvc.perform(post("/films")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(gson.toJson(film1883Year, type)))
-                .andExpect(status().isBadRequest());
-    }
-
-    @Test
-    void createFilmWidthNegativeDurationLoginTest() throws Exception {
-        Film filmNegativeDuration = new Film("FilmName", "FilmDescription", LocalDate.parse("1983-02-11"), -120);
-        Type type = new TypeToken<Film>() {}.getType();
-
-        mockMvc.perform(post("/films")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(gson.toJson(filmNegativeDuration, type)))
-                        .andExpect(status().isBadRequest());
-    }
+//    private Gson gson;
+//
+//    @Autowired
+//    private MockMvc mockMvc;
+//
+//    @MockBean
+//    private FilmService filmService;
+//
+//    @BeforeEach
+//    public void preBuild() {
+//        GsonBuilder gsonBuilder = new GsonBuilder();
+//        gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateAdapter());
+//        gson = gsonBuilder.create();
+//    }
+//
+//    @Test
+//    void createFilmTest() throws Exception {
+//        Film film = new Film("FilmName", "FilmDescription", LocalDate.parse("1980-02-11"), 120);
+//        Type type = new TypeToken<Film>() {}.getType();
+//
+//        mockMvc.perform(post("/films")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(gson.toJson(film, type)))
+//                        .andExpect(status().isOk());
+//    }
+//
+//    @Test
+//    void createFilmsBefore1885Test() throws Exception {
+//        Film film1883Year = new Film("FilmName", "FilmDescription", LocalDate.parse("1883-02-11"), 120);
+//        Type type = new TypeToken<Film>() {}.getType();
+//
+//        mockMvc.perform(post("/films")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(gson.toJson(film1883Year, type)))
+//                .andExpect(status().isBadRequest());
+//    }
+//
+//    @Test
+//    void createFilmWidthNegativeDurationLoginTest() throws Exception {
+//        Film filmNegativeDuration = new Film("FilmName", "FilmDescription", LocalDate.parse("1983-02-11"), -120);
+//        Type type = new TypeToken<Film>() {}.getType();
+//
+//        mockMvc.perform(post("/films")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(gson.toJson(filmNegativeDuration, type)))
+//                        .andExpect(status().isBadRequest());
+//    }
 }

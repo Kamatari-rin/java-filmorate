@@ -4,6 +4,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 public class FilmDurationValidator implements ConstraintValidator<FilmDuration, Integer> {
+
     @Override
     public boolean isValid(Integer duration, ConstraintValidatorContext constraintValidatorContext) {
         try {

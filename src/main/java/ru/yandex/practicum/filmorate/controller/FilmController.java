@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
 
-import java.util.List;
+import java.util.*;
 
 @ControllerAdvice
 @Slf4j
@@ -38,6 +38,26 @@ public class FilmController {
         if (count == null) {
             return filmService.getCountPopularFilms(-1);
         } else return filmService.getCountPopularFilms(count);
+    }
+
+    @GetMapping("/genres")
+    public Map<Integer, String> getAllGenres() {
+        return new HashMap<>();
+    }
+
+    @GetMapping("/genres/{id}")
+    public Map<Integer, String> getGenreById(@PathVariable Long id) {
+        return new HashMap<>();
+    }
+
+    @GetMapping("/mpa")
+    public Map<Integer, String> getAllMpa() {
+        return new HashMap<>();
+    }
+
+    @GetMapping("/mpa/{id}")
+    public Map<Integer, String> getMpaById(@PathVariable Long id) {
+        return new HashMap<>();
     }
 
 ///////////////////////////////////////////    POST MAPPING    /////////////////////////////////////////////////////////

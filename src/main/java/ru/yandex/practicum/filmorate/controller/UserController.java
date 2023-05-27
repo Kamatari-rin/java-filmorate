@@ -57,14 +57,14 @@ public class UserController {
     }
 
     @PutMapping(value = "/users/{id}/friends/{friendId}")
-    public ResponseEntity<User> addUserInFriendList(@PathVariable Long id, @PathVariable Long friendId) {
-        return new ResponseEntity<User>(userService.addNewFriend(id, friendId), HttpStatus.OK);
+    public ResponseEntity<List<User>> addUserInFriendList(@PathVariable Long id, @PathVariable Long friendId) {
+        return new ResponseEntity<List<User>>(userService.addNewFriend(id, friendId), HttpStatus.OK);
     }
 
 /////////////////////////////////////////    DELETE MAPPING    /////////////////////////////////////////////////////////
 
     @DeleteMapping("/users/{id}/friends/{friendId}")
-    public ResponseEntity<User> removeUserFromFriendList(@PathVariable Long id, @PathVariable Long friendId) {
-        return new ResponseEntity<User>(userService.removeFriend(id, friendId), HttpStatus.OK);
+    public ResponseEntity<List<User>> removeUserFromFriendList(@PathVariable Long id, @PathVariable Long friendId) {
+        return new ResponseEntity<List<User>>(userService.removeFriend(id, friendId), HttpStatus.OK);
     }
 }
