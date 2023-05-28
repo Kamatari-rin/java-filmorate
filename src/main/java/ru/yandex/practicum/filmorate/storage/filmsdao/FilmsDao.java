@@ -138,7 +138,7 @@ public class FilmsDao implements FilmStorage {
 
     @Override
     public Optional<List<Genre>> getAllGenres() {
-        return Optional.of(jdbcTemplate.query("select * from GENRES", genreRowMapper));
+        return Optional.of(jdbcTemplate.query("select * from GENRES order by GENRE_ID ", genreRowMapper));
     }
 
     @Override
