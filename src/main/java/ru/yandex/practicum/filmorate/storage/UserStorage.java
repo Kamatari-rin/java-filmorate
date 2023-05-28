@@ -20,5 +20,5 @@ public interface UserStorage {
 
     List<User> addUserInFriendList(Long id, Long friendId);
 
-    List<User> removeUserFromFriendList (Long id, Long friendId);
+    List<User> removeUserFromFriendList(Long id, Long friendId);
 }
