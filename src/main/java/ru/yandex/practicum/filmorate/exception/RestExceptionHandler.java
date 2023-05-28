@@ -65,7 +65,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler({EmptyResultDataAccessException.class})
-    public ResponseEntity<Object> EmptyResultDataAccessExceptionHandler(
+    public ResponseEntity<Object> emptyResultDataAccessExceptionHandler(
             EmptyResultDataAccessException ex) {
         String error = ex.getMessage();
 
