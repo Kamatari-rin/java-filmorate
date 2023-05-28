@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.service.FilmService;
 
 import java.util.*;
@@ -41,13 +42,13 @@ public class FilmController {
     }
 
     @GetMapping("/genres")
-    public Map<Integer, String> getAllGenres() {
-        return new HashMap<>();
+    public List<Genre> getAllGenres() {
+        return filmService.getGenres();
     }
 
     @GetMapping("/genres/{id}")
-    public Map<Integer, String> getGenreById(@PathVariable Long id) {
-        return new HashMap<>();
+    public Genre getGenreById(@PathVariable int id) {
+        return filmService.getGenreById(id);
     }
 
     @GetMapping("/mpa")
