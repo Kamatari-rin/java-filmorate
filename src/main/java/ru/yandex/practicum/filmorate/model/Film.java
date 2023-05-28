@@ -21,7 +21,7 @@ public class Film {
     @FilmDuration(message = "Film duration should be positive.")
     private int duration;
     private Set<Long> likes = new HashSet<>();
-    private HashSet<Genre> genres = new HashSet<>();
+    private Set<Genre> genres = new HashSet<>();
     private MpaRating mpa;
 
     public Film(String name,
@@ -29,7 +29,7 @@ public class Film {
                 LocalDate releaseDate,
                 int duration,
                 MpaRating mpa,
-                HashSet<Genre> genres) {
+                Set<Genre> genres) {
         this.name = name;
         this.description = description;
         this.releaseDate = releaseDate;
