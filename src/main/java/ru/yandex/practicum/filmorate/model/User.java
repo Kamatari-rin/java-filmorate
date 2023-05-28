@@ -22,7 +22,9 @@ public class User {
     @UserBirthday(message = "The user's date of birth must not be in the future.")
     private LocalDate birthday;
 
-    public User(){}
+    public User() {
+
+    }
 
     public User(String email, String login, String name, LocalDate birthday) {
         this.email = email;
