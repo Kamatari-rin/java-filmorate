@@ -7,6 +7,5 @@ import ru.yandex.practicum.filmorate.validator.GenreName;
 public class Genre {
 
     private Long id;
-    @GenreName
     private String name;
 }
