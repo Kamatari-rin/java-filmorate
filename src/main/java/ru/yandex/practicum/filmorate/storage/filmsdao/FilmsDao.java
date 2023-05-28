@@ -145,7 +145,8 @@ public class FilmsDao implements FilmStorage {
     public Optional<Genre> getGenreByID(int id) {
         return Optional.ofNullable(jdbcTemplate.queryForObject("select * "
                                                                  + "from  GENRES "
-                                                                 + "where GENRE_ID = ?", genreRowMapper, id));
+                                                                 + "where GENRE_ID = ? "
+                                                                 + "order by GENRE_ID", genreRowMapper, id));
     }
 
 ///////////////////////////////////////////////    MPA RATING    ///////////////////////////////////////////////////////
