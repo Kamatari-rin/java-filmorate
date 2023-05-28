@@ -72,11 +72,11 @@ public class UsersDao implements UserStorage {
 
         if (userRows.next()) {
             User user = new User(
-                    userRows.getLong(  "USER_ID"),
+                    userRows.getLong("USER_ID"),
                     userRows.getString("USER_EMAIL"),
                     userRows.getString("USER_LOGIN"),
                     userRows.getString("USER_NAME"),
-                    userRows.getDate(  "USER_BIRTHDAY").toLocalDate());
+                    userRows.getDate("USER_BIRTHDAY").toLocalDate());
 
             return user;
         } else {
