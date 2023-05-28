@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.exception;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,7 +54,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 apiError, new HttpHeaders(), apiError.getStatus());
     }
 
-    @ExceptionHandler({NullPointerException.class, SQLException.class})
+    @ExceptionHandler({NullPointerException.class, SQLException.class, EmptyResultDataAccessException.class})
     public ResponseEntity<Object> nullPointExceptionHandler(
             NullPointerException ex) {
         String error = ex.getMessage();
