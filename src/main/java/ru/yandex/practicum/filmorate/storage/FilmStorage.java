@@ -5,27 +5,29 @@ import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.MpaRating;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 public interface FilmStorage {
 
-    Film update(Film film);
+    Optional<Film> updateFilm(Film film);
 
-    Film add(Film film);
+    Optional<Film> addFilm(Film film);
 
-    Map<Long, Film> getFilmsMap();
+    Optional<Film> getFilmByID(Long id);
 
-    Film getFilmByID(Long id);
+    Optional<List<Film>> getFilmsList();
 
-    List<Film> getFilmsList();
+    Optional<List<Film>> getPopularFilmsList(int count);
 
-    List<Film> getPopularFilmsList(int count);
+    Optional<List<Genre>> getAllGenres();
 
-    List<Genre> getAllGenres();
+    Optional<Genre> getGenreByID(int id);
 
-    Genre getGenreByID(int id);
+    Optional<List<MpaRating>> getAllMpaRatings();
 
-    List<MpaRating> getAllMpaRatings();
+    Optional<MpaRating> getMpaRatingById(int id);
 
-    MpaRating getMpaRatingById(int id);
+    Optional<Film> likeFilm(Long filmId, Long userId);
+
+    Optional<Film> removeUserLikeFromFilm(Long filmId, Long userId);
 }

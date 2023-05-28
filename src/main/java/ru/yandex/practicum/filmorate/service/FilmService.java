@@ -6,70 +6,39 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class FilmService {
 
     @Autowired
     private FilmStorage filmStorage;
-    @Autowired
-    private UserService userService;
 
     public List<Film> getCountPopularFilms(Integer count) {
         List<Film> popularFilms = new ArrayList<>();
-
-        if (count == -1) {
-            popularFilms = new ArrayList<Film>(filmStorage.getFilmsMap().values()).stream()
-                    .sorted(Comparator.comparingInt((Film film) -> film.getLikes().size()).reversed())
-                    .collect(Collectors.toList());
-        } else {
-            popularFilms = new ArrayList<Film>(filmStorage.getFilmsMap().values()).stream()
-                    .sorted(Comparator.comparingInt((Film film) -> film.getLikes().size()).reversed())
-                    .limit(count)
-                    .collect(Collectors.toList());
-        }
         return popularFilms;
     }
 
     public Film addLike(Long filmId, Long userId) {
-        getFilmById(filmId)
-                .getLikes()
-                .add(userId);
-
-        return filmStorage
-                .getFilmsMap()
-                .get(filmId);
+        return Optional.ofNullable(filmStorage.likeFilm(filmId, userId).orElseThrow()).get();
     }
 
     public Film removeLike(Long filmId, Long userId) {
-        getFilmById(filmId)
-                .getLikes()
-                .remove(userId);
-
-        return filmStorage
-                .getFilmsMap()
-                .get(filmId);
+        return Optional.ofNullable(filmStorage.removeUserLikeFromFilm(filmId, userId).orElseThrow()).get();
     }
 
     public Film addFilm(Film film) {
-        Film newFilm = filmStorage.add(film);
-        return newFilm;
+        return Optional.ofNullable(filmStorage.addFilm(film).orElseThrow()).get();
     }
 
     public Film updateFilm(Film film) {
-        return filmStorage.update(film);
+        return Optional.ofNullable(filmStorage.updateFilm(film).orElseThrow()).get();
     }
 
     public List<Film> getAllFilms() {
-        if (filmStorage.getFilmsMap() != null) {
-            return new ArrayList<Film>(filmStorage.getFilmsMap().values());
-        } else throw new NullPointerException("Not a single movie was found.");
+        return Optional.ofNullable(filmStorage.getFilmsList().orElseThrow()).get();
     }
 
     public Film getFilmById(Long id) {
-        return filmStorage
-                .getFilmsMap()
-                .get(id);
+        return Optional.ofNullable(filmStorage.getFilmByID(id).orElseThrow()).get();
     }
 }

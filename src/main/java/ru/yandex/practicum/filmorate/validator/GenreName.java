@@ -13,7 +13,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @Constraint(validatedBy = GenreNameValidator.class)
 @Documented
-public @interface RatingName {
+public @interface GenreName {
 
     String message() default "{Validation is Failed check the fields.}";
     Class<?>[] groups() default { };

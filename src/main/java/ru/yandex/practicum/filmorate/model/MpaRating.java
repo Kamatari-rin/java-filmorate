@@ -1,7 +1,13 @@
 package ru.yandex.practicum.filmorate.model;
 
-public class MpaRating {
+import lombok.Data;
+import ru.yandex.practicum.filmorate.validator.RatingName;
 
-    Long id;
-    String name;
+import javax.validation.constraints.NotNull;
+
+@Data
+public class MpaRating {
+    @NotNull
+    private Long id;
+    private String name;
 }
