@@ -33,16 +33,14 @@ public class UserService {
         if (user.getName().isBlank() | user.getName() == null) {
             user.setName(user.getLogin());
         }
-        User newUser = new User(user.getName(), user.getLogin(), user.getEmail(), user.getBirthday());
-        return Optional.of(userStorage.create(newUser).orElseThrow()).get();
+        return Optional.of(userStorage.create(user).orElseThrow()).get();
     }
 
     public User updateUser(User user) {
         if (user.getName() == null) {
             user.setName(user.getLogin());
         }
-        User newUser = new User(user.getName(), user.getLogin(), user.getEmail(), user.getBirthday());
-        return Optional.of(userStorage.update(newUser).orElseThrow()).get();
+        return Optional.of(userStorage.update(user).orElseThrow()).get();
     }
 
     public List<User> getUsers() {

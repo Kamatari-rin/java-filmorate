@@ -50,6 +50,7 @@ public class UsersDao implements UserStorage {
     @Override
     public Optional<User> update(User user) {
         jdbcTemplate.update("delete from USERS where USER_ID = ?", user.getId());
+        log.warn(getUserById(user.getId()).toString());
         jdbcTemplate.update("update USERS "
                               + "set    USER_EMAIL = ?, "
                               + "       USER_LOGIN = ?, "
