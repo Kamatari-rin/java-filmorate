@@ -75,14 +75,14 @@ public class FilmController {
     }
 
     @PutMapping("/films/{id}/like/{userid}")
-    public ResponseEntity<Film> likeTheFilm(@PathVariable Long id, @PathVariable Long userid) {
-        return new ResponseEntity<Film>(filmService.addLike(id, userid), HttpStatus.OK);
+    public void likeTheFilm(@PathVariable Long id, @PathVariable Long userid) {
+        filmService.addLike(id, userid);
     }
 
 /////////////////////////////////////////    DELETE MAPPING    /////////////////////////////////////////////////////////
 
     @DeleteMapping("/films/{id}/like/{userId}")
-    public ResponseEntity<Film> deleteUserLike(@PathVariable Long id, @PathVariable Long userId) {
-        return new ResponseEntity<Film>(filmService.removeLike(id, userId), HttpStatus.OK);
+    public void deleteUserLike(@PathVariable Long id, @PathVariable Long userId) {
+        filmService.removeLike(id, userId);
     }
 }

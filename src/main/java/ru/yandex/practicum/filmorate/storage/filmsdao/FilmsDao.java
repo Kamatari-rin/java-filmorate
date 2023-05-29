@@ -166,23 +166,19 @@ public class FilmsDao implements FilmStorage {
 ///////////////////////////////////////////////    USERS LIKES    //////////////////////////////////////////////////////
 
     @Override
-    public Optional<Film> likeFilm(Long filmId, Long userId) {
+    public void likeFilm(Long filmId, Long userId) {
         removeUserLikeFromFilm(filmId, userId);
         jdbcTemplate.update("insert "
                               + "into FILM_LIKE (USER_ID, FILM_ID) "
                               + "values (?, ?) ", userId, filmId);
-
-        return getFilmByID(filmId);
     }
 
     @Override
-    public Optional<Film> removeUserLikeFromFilm(Long filmId, Long userId) {
+    public void removeUserLikeFromFilm(Long filmId, Long userId) {
         jdbcTemplate.update("delete "
                               + "from  FILM_LIKE "
                               + "where USER_ID = ? "
                               + "and   FILM_ID = ? ", userId, filmId);
-
-        return getFilmByID(filmId);
     }
 
 ///////////////////////////////////////////////    SERVICE METHODS    //////////////////////////////////////////////////

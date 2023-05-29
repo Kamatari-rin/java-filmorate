@@ -27,7 +27,7 @@ public interface FilmStorage {
 
     Optional<MpaRating> getMpaRatingById(int id);
 
-    Optional<Film> likeFilm(Long filmId, Long userId);
+    void likeFilm(Long filmId, Long userId);
 
-    Optional<Film> removeUserLikeFromFilm(Long filmId, Long userId);
+    void removeUserLikeFromFilm(Long filmId, Long userId);
 }
