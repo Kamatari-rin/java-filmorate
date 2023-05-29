@@ -62,18 +62,19 @@ public class FilmsDao implements FilmStorage {
 
     @Override
     public Optional<Film> updateFilm(Film film) {
+
         jdbcTemplate.update("update FILMS "
-                              + "set    FILM_NAME = ?, "
+                              + "set FILM_NAME = ?, "
                                      + "FILM_DESCRIPTION = ?, "
                                      + "FILM_DURATION = ?, "
                                      + "FILM_RELEASE_DATE = ?, "
                                      + "RATING_ID = ? "
-                              + "where  FILM_ID = ?",
+                              + "where FILM_ID = ?",
                         film.getName(),
                         film.getDescription(),
                         film.getDuration(),
                         film.getReleaseDate(),
-                        film.getMpa().getName(),
+                        film.getMpa().getId(),
                         film.getId());
 
         updateFilmGenres(film, film.getId());
@@ -83,6 +84,9 @@ public class FilmsDao implements FilmStorage {
 
     private void updateFilmGenres(Film film, Long filmId) {
         Set<Genre> filmGenres = film.getGenres();
+
+        jdbcTemplate.update("delete from GENRE_FILM where FILM_ID = ? ", filmId);
+
 
         for (Genre genre : filmGenres) {
             Long genreID = genre.getId();
