@@ -182,19 +182,11 @@ public class FilmsDao implements FilmStorage {
                                                                      + "from   FILM_LIKE "
                                                                      + "where  FILM_ID = ?", Long.class, id));
 
-//        Set<Genre> filmGenres = Set.copyOf(jdbcTemplate.query("select gf.GENRE_ID,  ge.GENRE_NAME "
-//                                                                + "from   GENRE_FILM as gf "
-//                                                                + "left join GENRES as ge on gf.GENRE_ID = ge.GENRE_ID "
-//                                                                + "group by gf.GENRE_ID, ge.GENRE_NAME, gf.FILM_ID "
-//                                                                + "having FILM_ID = ? ", genreRowMapper, id));
-
-                Set<Genre> filmGenres = Set.copyOf(jdbcTemplate.query("select gf.GENRE_ID,  ge.GENRE_NAME "
-                                                                + "from   GENRE_FILM as gf " +
-                                                                  "where FILM_ID = ? "
+        Set<Genre> filmGenres = Set.copyOf(jdbcTemplate.query("select gf.GENRE_ID,  ge.GENRE_NAME "
+                                                                + "from   GENRE_FILM as gf "
                                                                 + "left join GENRES as ge on gf.GENRE_ID = ge.GENRE_ID "
-                                                                + "group by gf.GENRE_ID, ge.GENRE_NAME, gf.FILM_ID " +
-                                "order by gf.GENRE_ID ",
-                                                                genreRowMapper, id));
+                                                                + "group by gf.GENRE_ID, ge.GENRE_NAME, gf.FILM_ID "
+                                                                + "having FILM_ID = ? ", genreRowMapper, id));
 
         MpaRating rating = jdbcTemplate.queryForObject("select * "
                                                          + "from  MPA_RATINGS "
