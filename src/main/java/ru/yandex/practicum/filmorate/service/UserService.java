@@ -14,19 +14,19 @@ public class UserService {
     private final UserStorage userStorage;
 
     public List<User> addNewFriend(Long id, Long friendId) {
-        return userStorage.addUserInFriendList(id, friendId);
+        return Optional.of(userStorage.addUserInFriendList(id, friendId).orElseThrow()).get();
     }
 
     public List<User> removeFriend(Long id, Long friendId) {
-        return userStorage.removeUserFromFriendList(id, friendId);
+        return Optional.of(userStorage.removeUserFromFriendList(id, friendId)).orElseThrow().get();
     }
 
     public List<User> getFriendListByUserId(Long id) {
-        return userStorage.getUserFriendList(id);
+        return Optional.of(userStorage.getUserFriendList(id).orElseThrow()).get();
     }
 
     public List<User> getCommonFriendListByUserId(Long id, Long otherUserId) {
-        return userStorage.getUserCommonFriendList(id, otherUserId);
+        return Optional.of(userStorage.getUserCommonFriendList(id, otherUserId).orElseThrow()).get();
     }
 
     public User addUser(User user) {
@@ -34,7 +34,7 @@ public class UserService {
             user.setName(user.getLogin());
         }
         User newUser = new User(user.getName(), user.getLogin(), user.getEmail(), user.getBirthday());
-        return userStorage.create(newUser);
+        return Optional.of(userStorage.create(newUser).orElseThrow()).get();
     }
 
     public User updateUser(User user) {
@@ -42,16 +42,14 @@ public class UserService {
             user.setName(user.getLogin());
         }
         User newUser = new User(user.getName(), user.getLogin(), user.getEmail(), user.getBirthday());
-        return userStorage.update(newUser);
+        return Optional.of(userStorage.update(newUser).orElseThrow()).get();
     }
 
     public List<User> getUsers() {
-        if (userStorage.getUsersList() != null) {
-            return userStorage.getUsersList();
-        } else throw new NullPointerException("Not a single User was found.");
+        return Optional.of(userStorage.getUsersList().orElseThrow()).get();
     }
 
     public User getUserById(Long id) {
-        return userStorage.getUserById(id);
+        return Optional.of(userStorage.getUserById(id).orElseThrow()).get();
     }
 }

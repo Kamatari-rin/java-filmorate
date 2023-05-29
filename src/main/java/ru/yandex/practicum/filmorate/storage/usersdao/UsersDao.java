@@ -30,12 +30,12 @@ public class UsersDao implements UserStorage {
     }
 
     @Override
-    public List<User> getUsersList() {
-        return  jdbcTemplate.query("select * from USERS", userRowMapper);
+    public Optional<List<User>> getUsersList() {
+        return  Optional.of(jdbcTemplate.query("select * from USERS", userRowMapper));
     }
 
     @Override
-    public User create(User user) {
+    public Optional<User> create(User user) {
         Map<String, Object> parameters = new HashMap<String, Object>();
 
         parameters.put("USER_EMAIL", user.getEmail());
@@ -44,11 +44,13 @@ public class UsersDao implements UserStorage {
         parameters.put("USER_BIRTHDAY", user.getBirthday());
 
         Long userID = simpleJdbcInsert.executeAndReturnKey(parameters).longValue();
+        log.warn(getUserById(userID).toString());
         return getUserById(userID);
     }
 
     @Override
-    public User update(User user) {
+    public Optional<User> update(User user) {
+        jdbcTemplate.update("delete from USERS where USER_ID = ?", user.getId());
         jdbcTemplate.update("update USERS "
                               + "set    USER_EMAIL = ?, "
                               + "       USER_LOGIN = ?, "
@@ -65,49 +67,35 @@ public class UsersDao implements UserStorage {
     }
 
     @Override
-    public User getUserById(Long id) {
-        SqlRowSet userRows = jdbcTemplate.queryForRowSet("select * "
-                                                           + "from  USERS "
-                                                           + "where USER_ID = ?", id);
-
-        if (userRows.next()) {
-            User user = new User(
-                    userRows.getLong("USER_ID"),
-                    userRows.getString("USER_EMAIL"),
-                    userRows.getString("USER_LOGIN"),
-                    userRows.getString("USER_NAME"),
-                    userRows.getDate("USER_BIRTHDAY").toLocalDate());
-
-            return user;
-        } else {
-            log.warn("Пользователь с идентификатором {} не найден.", id);
-            return null;
-        }
+    public Optional<User> getUserById(Long id) {
+        return Optional.ofNullable(jdbcTemplate.queryForObject("select * "
+                                                                 + "from  USERS "
+                                                                 + "where USER_ID = ?", userRowMapper, id));
     }
 
     @Override
-    public List<User> getUserFriendList(Long id) {
-        return jdbcTemplate.query("select * "
+    public Optional<List<User>> getUserFriendList(Long id) {
+        return Optional.of(jdbcTemplate.query("select * "
                                     + "from  USERS "
                                     + "where USER_ID in (select  FRIEND_ID "
                                                       + "from  FRIENDS "
-                                                      + "where USER_ID = ?)", userRowMapper, id);
+                                                      + "where USER_ID = ?)", userRowMapper, id));
     }
 
     @Override
-    public List<User> getUserCommonFriendList(Long id, Long friendId) {
-        return jdbcTemplate.query("select * "
+    public Optional<List<User>> getUserCommonFriendList(Long id, Long friendId) {
+        return Optional.of(jdbcTemplate.query("select * "
                                     + "from  USERS "
                                     + "where USER_ID in (select FRIEND_ID "
                                                       + "from   FRIENDS "
                                                       + "where  USER_ID = ?) "
                                     + "and   USER_ID in (select FRIEND_ID "
                                                       + "from   FRIENDS "
-                                                      + "where  USER_ID = ?)", userRowMapper, id, friendId);
+                                                      + "where  USER_ID = ?)", userRowMapper, id, friendId));
     }
 
     @Override
-    public List<User> addUserInFriendList(Long id, Long friendId) {
+    public Optional<List<User>> addUserInFriendList(Long id, Long friendId) {
         jdbcTemplate.update("insert "
                               + "into FRIENDS (USER_ID, FRIEND_ID, STATUS) "
                               + "values (?, ?, ?)", id, friendId, "");
@@ -116,7 +104,7 @@ public class UsersDao implements UserStorage {
     }
 
     @Override
-    public List<User> removeUserFromFriendList(Long id, Long friendId) {
+    public Optional<List<User>> removeUserFromFriendList(Long id, Long friendId) {
         jdbcTemplate.update("delete "
                               + "from  FRIENDS "
                               + "where USER_ID = ? "

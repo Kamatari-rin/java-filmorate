@@ -20,27 +20,27 @@ public class FilmService {
     }
 
     public Film addLike(Long filmId, Long userId) {
-        return Optional.ofNullable(filmStorage.likeFilm(filmId, userId).orElseThrow()).get();
+        return Optional.of(filmStorage.likeFilm(filmId, userId).orElseThrow()).get();
     }
 
     public Film removeLike(Long filmId, Long userId) {
-        return Optional.ofNullable(filmStorage.removeUserLikeFromFilm(filmId, userId).orElseThrow()).get();
+        return Optional.of(filmStorage.removeUserLikeFromFilm(filmId, userId).orElseThrow()).get();
     }
 
     public Film addFilm(Film film) {
-        return Optional.ofNullable(filmStorage.addFilm(film).orElseThrow()).get();
+        return Optional.of(filmStorage.addFilm(film).orElseThrow()).get();
     }
 
     public List<Genre> getGenres() {
-        return Optional.ofNullable(filmStorage.getAllGenres().orElseThrow()).get();
+        return Optional.of(filmStorage.getAllGenres().orElseThrow()).get();
     }
 
     public Genre getGenreById(int id) {
-        return Optional.ofNullable(filmStorage.getGenreByID(id).orElseThrow()).get();
+        return Optional.of(filmStorage.getGenreByID(id).orElseThrow()).get();
     }
 
     public Film updateFilm(Film film) {
-        return Optional.ofNullable(filmStorage.updateFilm(film).orElseThrow()).get();
+        return Optional.of(filmStorage.updateFilm(film).orElseThrow()).get();
     }
 
     public List<Film> getAllFilms() {
@@ -48,6 +48,6 @@ public class FilmService {
     }
 
     public Film getFilmById(Long id) {
-        return Optional.ofNullable(filmStorage.getFilmByID(id).orElseThrow()).get();
+        return Optional.of(filmStorage.getFilmByID(id).orElseThrow()).get();
     }
 }
