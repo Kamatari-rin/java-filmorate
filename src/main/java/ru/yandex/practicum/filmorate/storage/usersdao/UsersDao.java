@@ -49,6 +49,7 @@ public class UsersDao implements UserStorage {
 
     @Override
     public Optional<User> update(User user) {
+        Long id = user.getId();
         log.warn(user.toString());
         jdbcTemplate.update("update USERS "
                               + "set    USER_EMAIL = ?, "
@@ -62,7 +63,7 @@ public class UsersDao implements UserStorage {
                 user.getBirthday(),
                 user.getId());
 
-        return Optional.of(user);
+        return getUserById(id);
     }
 
     @Override
