@@ -12,7 +12,6 @@ import ru.yandex.practicum.filmorate.storage.usersdao.UsersDao;
 import javax.validation.*;
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
