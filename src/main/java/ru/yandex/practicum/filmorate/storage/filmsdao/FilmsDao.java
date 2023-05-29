@@ -64,10 +64,10 @@ public class FilmsDao implements FilmStorage {
     public Optional<Film> updateFilm(Film film) {
         jdbcTemplate.update("update FILMS "
                               + "set    FILM_NAME = ?, "
-                              + "       FILM_DESCRIPTION = ?, "
-                              + "       FILM_DURATION = ?, "
-                              + "       FILM_RELEASE_DATE = ? "
-                              + "       RATING_ID = ? "
+                                     + "FILM_DESCRIPTION = ?, "
+                                     + "FILM_DURATION = ?, "
+                                     + "FILM_RELEASE_DATE = ?, "
+                                     + "RATING_ID = ? "
                               + "where  FILM_ID = ?",
                         film.getName(),
                         film.getDescription(),
@@ -161,7 +161,8 @@ public class FilmsDao implements FilmStorage {
     public Optional<MpaRating> getMpaRatingById(int id) {
         return Optional.ofNullable(jdbcTemplate.queryForObject("select * "
                                                                  + "from  MPA_RATINGS "
-                                                                 + "where RATING_ID = ?", mpaRatingRowMapper, id));
+                                                                 + "where RATING_ID = ? "
+                                                                 + "order by RATING_ID", mpaRatingRowMapper, id));
     }
 
 ///////////////////////////////////////////////    USERS LIKES    //////////////////////////////////////////////////////
