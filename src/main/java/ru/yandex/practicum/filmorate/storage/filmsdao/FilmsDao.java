@@ -198,13 +198,20 @@ public class FilmsDao implements FilmStorage {
                                                                 + "having FILM_ID = ? "
                                                                 + "order by GENRE_ID ", genreRowMapper, id));
 
+        Set<Genre> sortedFilmGenre = new TreeSet<Genre>(new Comparator<Genre>() {
+            public int compare(Genre o1, Genre o2) {
+                return o1.getId().compareTo(o2.getId());
+            }
+        });
+        sortedFilmGenre.addAll(filmGenres);
+
         MpaRating rating = jdbcTemplate.queryForObject("select * "
                                                          + "from  MPA_RATINGS "
                                                          + "where RATING_ID = ? ",
                                                          mpaRatingRowMapper, film.getMpa().getId());
 
         film.setLikes(usersLike);
-        film.setGenres(filmGenres);
+        film.setGenres(sortedFilmGenre);
         film.setMpa(rating);
     }
 }
