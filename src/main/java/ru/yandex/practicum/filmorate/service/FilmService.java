@@ -6,6 +6,7 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.MpaRating;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
+import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.util.*;
 
@@ -14,6 +15,8 @@ public class FilmService {
 
     @Autowired
     private FilmStorage filmStorage;
+    @Autowired
+    private UserStorage userStorage;
 
     public List<Film> getCountPopularFilms(Integer count) {
         if (count == null) {
@@ -27,6 +30,7 @@ public class FilmService {
     }
 
     public Film removeLike(Long filmId, Long userId) {
+        userStorage.getUserById(userId);
         return Optional.of(filmStorage.removeUserLikeFromFilm(filmId, userId).orElseThrow()).get();
     }
 
