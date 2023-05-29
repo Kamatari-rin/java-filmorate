@@ -196,7 +196,8 @@ public class FilmsDao implements FilmStorage {
                                                                 + "from   GENRE_FILM as gf "
                                                                 + "left join GENRES as ge on gf.GENRE_ID = ge.GENRE_ID "
                                                                 + "group by gf.GENRE_ID, ge.GENRE_NAME, gf.FILM_ID "
-                                                                + "having FILM_ID = ? ", genreRowMapper, id));
+                                                                + "having FILM_ID = ? "
+                                                                + "order by GENRE_ID ", genreRowMapper, id));
 
         MpaRating rating = jdbcTemplate.queryForObject("select * "
                                                          + "from  MPA_RATINGS "

@@ -43,14 +43,12 @@ public class UsersDao implements UserStorage {
         parameters.put("USER_BIRTHDAY", user.getBirthday());
 
         Long userID = simpleJdbcInsert.executeAndReturnKey(parameters).longValue();
-        log.warn(getUserById(userID).toString());
         return getUserById(userID);
     }
 
     @Override
     public Optional<User> update(User user) {
         Long id = user.getId();
-        log.warn(user.toString());
         jdbcTemplate.update("update USERS "
                               + "set    USER_EMAIL = ?, "
                                      + "USER_LOGIN = ?, "
