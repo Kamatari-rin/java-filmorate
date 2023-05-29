@@ -22,12 +22,12 @@ public class FilmService {
         return Optional.of(filmStorage.getPopularFilmsList(count).orElseThrow()).get();
     }
 
-    public Film addLike(Long filmId, Long userId) {
-        return Optional.of(filmStorage.likeFilm(filmId, userId).orElseThrow()).get();
+    public void addLike(Long filmId, Long userId) {
+        filmStorage.likeFilm(filmId, userId);
     }
 
-    public Film removeLike(Long filmId, Long userId) {
-        return Optional.of(filmStorage.removeUserLikeFromFilm(filmId, userId).orElseThrow()).get();
+    public void removeLike(Long filmId, Long userId) {
+        filmStorage.removeUserLikeFromFilm(filmId, userId);
     }
 
     public Film addFilm(Film film) {
