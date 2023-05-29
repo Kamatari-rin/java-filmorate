@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class UserDaoImplTest {
+class UserDaoTest {
     private final UsersDao userStorage;
     private User userOne;
     private User userSecond;

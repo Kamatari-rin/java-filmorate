@@ -120,11 +120,11 @@ public class FilmsDao implements FilmStorage {
     @Override
     public Optional<List<Film>> getPopularFilmsList(int count) {
         List<Film> popularFilmList = jdbcTemplate.query("select fm.* "
-                                                + "from FILMS as fm "
-                                                + "left join FILM_LIKE as fl on fm.FILM_ID = fl.FILM_ID "
-                                                + "group by fm.FILM_ID "
-                                                + "order by count(fl.USER_ID)"
-                                                + "desc limit ? ", filmRowMapper, count);
+                                                         + "from FILMS as fm "
+                                                         + "left join FILM_LIKE as fl on fm.FILM_ID = fl.FILM_ID "
+                                                         + "group by fm.FILM_ID "
+                                                         + "order by count(fl.USER_ID)"
+                                                         + "desc limit ? ", filmRowMapper, count);
 
         for (Film film : popularFilmList) {
             setGenresLikesRatingInFilm(film, film.getId());

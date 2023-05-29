@@ -74,10 +74,10 @@ public class UsersDao implements UserStorage {
     @Override
     public Optional<List<User>> getUserFriendList(Long id) {
         return Optional.of(jdbcTemplate.query("select * "
-                                    + "from  USERS "
-                                    + "where USER_ID in (select  FRIEND_ID "
-                                                      + "from  FRIENDS "
-                                                      + "where USER_ID = ?)", userRowMapper, id));
+                                                + "from  USERS "
+                                                + "where USER_ID in (select  FRIEND_ID "
+                                                                  + "from  FRIENDS "
+                                                                  + "where USER_ID = ?)", userRowMapper, id));
     }
 
     @Override
