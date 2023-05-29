@@ -16,6 +16,9 @@ public class FilmService {
     private FilmStorage filmStorage;
 
     public List<Film> getCountPopularFilms(Integer count) {
+        if (count == null) {
+            count = 10;
+        }
         return Optional.of(filmStorage.getPopularFilmsList(count).orElseThrow()).get();
     }
 
