@@ -30,7 +30,7 @@ public class UsersDao implements UserStorage {
 
     @Override
     public Optional<List<User>> getUsersList() {
-        return  Optional.of(jdbcTemplate.query("select * from USERS", userRowMapper));
+        return  Optional.of(jdbcTemplate.query("select * from USERS order by USER_ID", userRowMapper));
     }
 
     @Override
@@ -49,21 +49,18 @@ public class UsersDao implements UserStorage {
 
     @Override
     public Optional<User> update(User user) {
-        jdbcTemplate.update("delete from USERS where USER_ID = ?", user.getId());
-        log.warn(getUserById(user.getId()).toString());
         jdbcTemplate.update("update USERS "
-                              + "set    USER_EMAIL = ?, "
-                              + "       USER_LOGIN = ?, "
-                              + "       USER_NAME = ?, "
-                              + "       USER_BIRTHDAY = ? "
-                              + "where  USER_ID = ?",
-                                 user.getEmail(),
-                                 user.getLogin(),
-                                 user.getName(),
-                                 user.getBirthday(),
-                                 user.getId());
-
-        return getUserById(user.getId());
+                        + "set    USER_EMAIL = ?, "
+                        + "       USER_LOGIN = ?, "
+                        + "       USER_NAME = ?, "
+                        + "       USER_BIRTHDAY = ? "
+                        + "where  USER_ID = ?",
+                user.getEmail(),
+                user.getLogin(),
+                user.getName(),
+                user.getBirthday(),
+                user.getId());
+        return Optional.of(user);
     }
 
     @Override
