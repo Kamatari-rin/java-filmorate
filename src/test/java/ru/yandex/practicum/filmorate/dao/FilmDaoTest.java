@@ -35,9 +35,8 @@ class FilmDaoTest {
         MpaRating rating = new MpaRating();
         rating.setId(1L);
         rating.setName("G");
-        filmSecond = new Film("Chicken Run", "Chicken Run is a 2000 stop-motion animated adventure " +
-                "comedy film produced by Pathé ",
-                LocalDate.of(2000, 12, 28), 120,
+        filmSecond = new Film("FILM_Name", "Film_description",
+                LocalDate.of(2000, 1, 1), 120,
                 rating, new HashSet<>());
 
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
