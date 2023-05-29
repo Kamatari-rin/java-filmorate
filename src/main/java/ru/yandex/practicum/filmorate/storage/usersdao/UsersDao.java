@@ -97,8 +97,8 @@ public class UsersDao implements UserStorage {
     @Override
     public Optional<List<User>> addUserInFriendList(Long id, Long friendId) {
         jdbcTemplate.update("insert "
-                              + "into FRIENDS (USER_ID, FRIEND_ID, STATUS) "
-                              + "values (?, ?, ?)", id, friendId, "");
+                              + "into FRIENDS (USER_ID, FRIEND_ID) "
+                              + "values (?, ?)", id, friendId);
 
         return getUserFriendList(id);
     }
