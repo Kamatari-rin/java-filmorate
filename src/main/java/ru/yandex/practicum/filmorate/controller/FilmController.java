@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
+import ru.yandex.practicum.filmorate.model.MpaRating;
 import ru.yandex.practicum.filmorate.service.FilmService;
 
 import java.util.*;
@@ -52,13 +53,13 @@ public class FilmController {
     }
 
     @GetMapping("/mpa")
-    public Map<Integer, String> getAllMpa() {
-        return new HashMap<>();
+    public List<MpaRating> getAllMpa() {
+        return filmService.getMpaRatingList();
     }
 
     @GetMapping("/mpa/{id}")
-    public Map<Integer, String> getMpaById(@PathVariable Long id) {
-        return new HashMap<>();
+    public MpaRating getMpaById(@PathVariable int id) {
+        return filmService.getMpaRatingById(id);
     }
 
 ///////////////////////////////////////////    POST MAPPING    /////////////////////////////////////////////////////////
