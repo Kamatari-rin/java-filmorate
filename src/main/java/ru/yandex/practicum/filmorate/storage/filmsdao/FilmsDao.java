@@ -103,34 +103,18 @@ public class FilmsDao implements FilmStorage {
         Film film = jdbcTemplate.queryForObject("select * "
                                                   + "from  FILMS "
                                                   + "where FILM_ID = ?", filmRowMapper, id);
-
-        Set<Long> usersLike = Set.copyOf(jdbcTemplate.queryForList("select USER_ID "
-                                                                     + "from   FILM_LIKE "
-                                                                     + "where  FILM_ID = ?", Long.class, id));
-
-        Set<Genre> filmGenres = Set.copyOf(jdbcTemplate.query("select gf.GENRE_ID,  ge.GENRE_NAME "
-                                                                + "from   GENRE_FILM as gf "
-                                                                + "left join GENRES as ge on gf.GENRE_ID = ge.GENRE_ID "
-                                                                + "group by gf.GENRE_ID, ge.GENRE_NAME "
-                                                                + "having FILM_ID = ? ", genreRowMapper, id));
-
-        log.warn(filmGenres.toString());
-
-        MpaRating rating = jdbcTemplate.queryForObject("select * "
-                                                         + "from  MPA_RATINGS "
-                                                         + "where RATING_ID = ? ",
-                                                         mpaRatingRowMapper, film.getMpa().getId());
-
-        film.setLikes(usersLike);
-        film.setGenres(filmGenres);
-        film.setMpa(rating);
-
+        setGenresLikesRatingInFilm(film, id);
         return Optional.of(film);
     }
 
     @Override
     public Optional<List<Film>> getFilmsList() {
-        return Optional.of(jdbcTemplate.query("select * from FILMS", filmRowMapper));
+        List<Film> filmList = jdbcTemplate.query("select * from FILMS", filmRowMapper);
+
+        for (Film film : filmList) {
+            setGenresLikesRatingInFilm(film, film.getId());
+        }
+        return Optional.of(filmList);
     }
 
     @Override
@@ -192,4 +176,25 @@ public class FilmsDao implements FilmStorage {
     }
 
 ///////////////////////////////////////////////    SERVICE METHODS    //////////////////////////////////////////////////
+
+    private void setGenresLikesRatingInFilm(Film film, Long id) {
+        Set<Long> usersLike = Set.copyOf(jdbcTemplate.queryForList("select USER_ID "
+                + "from   FILM_LIKE "
+                + "where  FILM_ID = ?", Long.class, id));
+
+        Set<Genre> filmGenres = Set.copyOf(jdbcTemplate.query("select gf.GENRE_ID,  ge.GENRE_NAME "
+                + "from   GENRE_FILM as gf "
+                + "left join GENRES as ge on gf.GENRE_ID = ge.GENRE_ID "
+                + "group by gf.GENRE_ID, ge.GENRE_NAME, gf.FILM_ID "
+                + "having FILM_ID = ? ", genreRowMapper, id));
+
+        MpaRating rating = jdbcTemplate.queryForObject("select * "
+                        + "from  MPA_RATINGS "
+                        + "where RATING_ID = ? ",
+                mpaRatingRowMapper, film.getMpa().getId());
+
+        film.setLikes(usersLike);
+        film.setGenres(filmGenres);
+        film.setMpa(rating);
+    }
 }
