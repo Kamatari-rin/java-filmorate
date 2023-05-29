@@ -16,8 +16,7 @@ public class FilmService {
     private FilmStorage filmStorage;
 
     public List<Film> getCountPopularFilms(Integer count) {
-        List<Film> popularFilms = new ArrayList<>();
-        return popularFilms;
+        return Optional.of(filmStorage.getPopularFilmsList(count).orElseThrow()).get();
     }
 
     public Film addLike(Long filmId, Long userId) {
