@@ -88,9 +88,9 @@ public class FilmController {
     }
 
     @PutMapping("/films/{id}/like/{userid}")
-    public void likeTheFilm(@PathVariable Long id, @PathVariable Long userid) {
+    public void likeTheFilm(@PathVariable Long id, @PathVariable Long userId) {
         log.info("The user with id = {} {} {} ", userId, " added like for the film with id = ", id);
-        filmService.addLike(id, userid);
+        filmService.addLike(id, userId);
     }
 
 /////////////////////////////////////////    DELETE MAPPING    /////////////////////////////////////////////////////////
