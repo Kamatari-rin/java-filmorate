@@ -14,40 +14,40 @@ public class UserService {
     private final UserStorage userStorage;
 
     public List<User> addNewFriend(Long id, Long friendId) {
-        return Optional.of(userStorage.addUserInFriendList(id, friendId).orElseThrow()).get();
+        return userStorage.addUserInFriendList(id, friendId).get();
     }
 
     public List<User> removeFriend(Long id, Long friendId) {
-        return Optional.of(userStorage.removeUserFromFriendList(id, friendId)).orElseThrow().get();
+        return userStorage.removeUserFromFriendList(id, friendId).get();
     }
 
     public List<User> getFriendListByUserId(Long id) {
-        return Optional.of(userStorage.getUserFriendList(id).orElseThrow()).get();
+        return userStorage.getUserFriendList(id).get();
     }
 
     public List<User> getCommonFriendListByUserId(Long id, Long otherUserId) {
-        return Optional.of(userStorage.getUserCommonFriendList(id, otherUserId).orElseThrow()).get();
+        return userStorage.getUserCommonFriendList(id, otherUserId).get();
     }
 
     public User addUser(User user) {
         if (user.getName().isBlank() | user.getName() == null) {
             user.setName(user.getLogin());
         }
-        return Optional.of(userStorage.create(user).orElseThrow()).get();
+        return userStorage.create(user).get();
     }
 
     public User updateUser(User user) {
         if (user.getName() == null) {
             user.setName(user.getLogin());
         }
-        return Optional.of(userStorage.update(user).orElseThrow()).get();
+        return userStorage.update(user).get();
     }
 
     public List<User> getUsers() {
-        return Optional.of(userStorage.getUsersList().orElseThrow()).get();
+        return userStorage.getUsersList().get();
     }
 
     public User getUserById(Long id) {
-        return Optional.of(userStorage.getUserById(id).orElseThrow()).get();
+        return userStorage.getUserById(id).get();
     }
 }
