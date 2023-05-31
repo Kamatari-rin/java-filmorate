@@ -41,9 +41,4 @@ public class Film {
     public Film() {
 
     }
-
-    public List<Genre> genreList(Genre genre) {
-        genres.add(genre);
-        return new ArrayList<Genre>(genres);
-    }
 }

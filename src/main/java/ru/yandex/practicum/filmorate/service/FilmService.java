@@ -22,47 +22,47 @@ public class FilmService {
         if (count == null) {
             count = 10;
         }
-        return Optional.of(filmStorage.getPopularFilmsList(count).orElseThrow()).get();
+        return filmStorage.getPopularFilmsList(count).get();
     }
 
     public Film addLike(Long filmId, Long userId) {
-        return Optional.of(filmStorage.likeFilm(filmId, userId).orElseThrow()).get();
+        return filmStorage.likeFilm(filmId, userId).get();
     }
 
     public Film removeLike(Long filmId, Long userId) {
         userStorage.getUserById(userId);
-        return Optional.of(filmStorage.removeUserLikeFromFilm(filmId, userId).orElseThrow()).get();
+        return filmStorage.removeUserLikeFromFilm(filmId, userId).get();
     }
 
     public Film addFilm(Film film) {
-        return Optional.of(filmStorage.addFilm(film).orElseThrow()).get();
+        return filmStorage.addFilm(film).get();
     }
 
     public List<Genre> getGenres() {
-        return Optional.of(filmStorage.getAllGenres().orElseThrow()).get();
+        return filmStorage.getAllGenres().get();
     }
 
     public Genre getGenreById(int id) {
-        return Optional.of(filmStorage.getGenreByID(id).orElseThrow()).get();
+        return filmStorage.getGenreByID(id).get();
     }
 
     public Film updateFilm(Film film) {
-        return Optional.of(filmStorage.updateFilm(film).orElseThrow()).get();
+        return filmStorage.updateFilm(film).get();
     }
 
     public List<Film> getAllFilms() {
-        return Optional.ofNullable(filmStorage.getFilmsList().orElseThrow()).get();
+        return filmStorage.getFilmsList().get();
     }
 
     public Film getFilmById(Long id) {
-        return Optional.of(filmStorage.getFilmByID(id).orElseThrow()).get();
+        return filmStorage.getFilmByID(id).get();
     }
 
     public MpaRating getMpaRatingById(int id) {
-        return Optional.of(filmStorage.getMpaRatingById(id).orElseThrow()).get();
+        return filmStorage.getMpaRatingById(id).get();
     }
 
     public List<MpaRating> getMpaRatingList() {
-        return Optional.of(filmStorage.getAllMpaRatings().orElseThrow()).get();
+        return filmStorage.getAllMpaRatings().get();
     }
 }
