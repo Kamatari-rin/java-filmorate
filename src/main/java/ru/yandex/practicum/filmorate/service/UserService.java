@@ -13,94 +13,41 @@ public class UserService {
 
     private final UserStorage userStorage;
 
-    public User addNewFriend(Long id, Long friendId) {
-        isUserExist(id);
-        isUserExist(friendId);
-
-        getUserById(id)
-                .getFriends()
-                .add(friendId);
-
-        getUserById(friendId)
-                .getFriends()
-                .add(id);
-
-        return getUserById(id);
+    public List<User> addNewFriend(Long id, Long friendId) {
+        return userStorage.addUserInFriendList(id, friendId).get();
     }
 
-    public User removeFriend(Long id, Long friendId) {
-        isUserExist(id);
-        isUserExist(friendId);
-
-        getUserById(id)
-                .getFriends()
-                .remove(friendId);
-
-        getUserById(friendId)
-                .getFriends()
-                .remove(id);
-
-        return getUserById(id);
+    public List<User> removeFriend(Long id, Long friendId) {
+        return userStorage.removeUserFromFriendList(id, friendId).get();
     }
 
     public List<User> getFriendListByUserId(Long id) {
-        isUserExist(id);
-
-        final List<User> friendList = new ArrayList<>();
-        final List<Long> userFriendList = List.copyOf(getUserById(id).getFriends());
-
-        for (Long friendId : userFriendList) {
-            friendList.add(getUserById(friendId));
-        }
-        return friendList;
+        return userStorage.getUserFriendList(id).get();
     }
 
     public List<User> getCommonFriendListByUserId(Long id, Long otherUserId) {
-        isUserExist(id);
-        isUserExist(otherUserId);
-
-        final List<User> commonFriendListByUserId = new ArrayList<>();
-        final List<Long> userFriendList = List.copyOf(getUserById(id).getFriends());
-        final List<Long> otherUserFriendList = List.copyOf(getUserById(otherUserId).getFriends());
-
-        for (Long friendId : userFriendList) {
-            if (otherUserFriendList.contains(friendId)) {
-                commonFriendListByUserId.add(getUserById(friendId));
-            }
-        }
-
-        return commonFriendListByUserId;
+        return userStorage.getUserCommonFriendList(id, otherUserId).get();
     }
 
     public User addUser(User user) {
         if (user.getName().isBlank() | user.getName() == null) {
             user.setName(user.getLogin());
         }
-        return userStorage.create(user);
+        return userStorage.create(user).get();
     }
 
     public User updateUser(User user) {
-        isUserExist(user.getId());
-        return userStorage.update(user);
+        if (user.getName() == null) {
+            user.setName(user.getLogin());
+        }
+        return userStorage.update(user).get();
     }
 
     public List<User> getUsers() {
-        if (userStorage.getUsersMap() != null) {
-            return new ArrayList<User>(userStorage.getUsersMap().values());
-        } else throw new NullPointerException("Not a single User was found.");
+        return userStorage.getUsersList().get();
     }
 
     public User getUserById(Long id) {
-        isUserExist(id);
-        return userStorage
-                .getUsersMap()
-                .get(id);
-    }
-
-    public void isUserExist(Long id) {
-        if (!userStorage.getUsersMap().containsKey(id)) {
-            throw new NullPointerException("The User with this id does not exist: " +
-                    "[User id: " + id + "].");
-        }
+        return userStorage.getUserById(id).get();
     }
 }

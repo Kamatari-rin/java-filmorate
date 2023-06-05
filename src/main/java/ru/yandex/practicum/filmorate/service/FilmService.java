@@ -3,10 +3,12 @@ package ru.yandex.practicum.filmorate.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.Genre;
+import ru.yandex.practicum.filmorate.model.MpaRating;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
+import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class FilmService {
@@ -14,77 +16,53 @@ public class FilmService {
     @Autowired
     private FilmStorage filmStorage;
     @Autowired
-    private UserService userService;
+    private UserStorage userStorage;
 
     public List<Film> getCountPopularFilms(Integer count) {
-        List<Film> popularFilms = new ArrayList<>();
-
-        if (count == -1) {
-            popularFilms = new ArrayList<Film>(filmStorage.getFilmsMap().values()).stream()
-                    .sorted(Comparator.comparingInt((Film film) -> film.getLikes().size()).reversed())
-                    .collect(Collectors.toList());
-        } else {
-            popularFilms = new ArrayList<Film>(filmStorage.getFilmsMap().values()).stream()
-                    .sorted(Comparator.comparingInt((Film film) -> film.getLikes().size()).reversed())
-                    .limit(count)
-                    .collect(Collectors.toList());
+        if (count == null) {
+            count = 10;
         }
-        return popularFilms;
+        return filmStorage.getPopularFilmsList(count).get();
     }
 
     public Film addLike(Long filmId, Long userId) {
-        userService.isUserExist(userId);
-        isFilmExist(filmId);
-
-        getFilmById(filmId)
-                .getLikes()
-                .add(userId);
-
-        return filmStorage
-                .getFilmsMap()
-                .get(filmId);
+        return filmStorage.likeFilm(filmId, userId).get();
     }
 
     public Film removeLike(Long filmId, Long userId) {
-        userService.isUserExist(userId);
-        isFilmExist(filmId);
-
-        getFilmById(filmId)
-                .getLikes()
-                .remove(userId);
-
-        return filmStorage
-                .getFilmsMap()
-                .get(filmId);
+        userStorage.getUserById(userId);
+        return filmStorage.removeUserLikeFromFilm(filmId, userId).get();
     }
 
     public Film addFilm(Film film) {
-        Film newFilm = filmStorage.add(film);
-        return newFilm;
+        return filmStorage.addFilm(film).get();
+    }
+
+    public List<Genre> getGenres() {
+        return filmStorage.getAllGenres().get();
+    }
+
+    public Genre getGenreById(int id) {
+        return filmStorage.getGenreByID(id).get();
     }
 
     public Film updateFilm(Film film) {
-        isFilmExist(film.getId());
-        return filmStorage.update(film);
+        return filmStorage.updateFilm(film).get();
     }
 
     public List<Film> getAllFilms() {
-        if (filmStorage.getFilmsMap() != null) {
-            return new ArrayList<Film>(filmStorage.getFilmsMap().values());
-        } else throw new NullPointerException("Not a single movie was found.");
+        return filmStorage.getFilmsList().get();
     }
 
     public Film getFilmById(Long id) {
-        isFilmExist(id);
-        return filmStorage
-                .getFilmsMap()
-                .get(id);
+        return filmStorage.getFilmByID(id).get();
     }
 
-    public void isFilmExist(Long id) {
-        if (!filmStorage.getFilmsMap().containsKey(id)) {
-            throw new NullPointerException("The movie with this id does not exist: " +
-                    "[Film id: " + id + "].");
-        }
+    public MpaRating getMpaRatingById(int id) {
+        return filmStorage.getMpaRatingById(id).get();
+    }
+
+    public List<MpaRating> getMpaRatingList() {
+        return filmStorage.getAllMpaRatings().get();
     }
 }
