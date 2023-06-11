@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.netbeans.external:org-apache-commons-lang3:RELEASE130">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.m2/repository/org/netbeans/external/org-apache-commons-lang3/RELEASE130/org-apache-commons-lang3-RELEASE130.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.m2/repository/org/netbeans/external/org-apache-commons-lang3/RELEASE130/org-apache-commons-lang3-RELEASE130-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.m2/repository/org/netbeans/external/org-apache-commons-lang3/RELEASE130/org-apache-commons-lang3-RELEASE130-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
